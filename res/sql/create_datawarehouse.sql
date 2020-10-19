@@ -1,13 +1,13 @@
 -- -------------
 -- CREATE SCHEMA
 -- -------------
-CREATE TABLE _identifier (
+CREATE TABLE IF NOT EXISTS _identifier (
   id varchar(255) NOT NULL,
   timestamp datetime NOT NULL,
   PRIMARY KEY (id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE _implementation (
+CREATE TABLE IF NOT EXISTS _implementation (
   implementation_id int(11) NOT NULL,
   connection_url varchar(255) NOT NULL,
   driver varchar(255) NOT NULL,
@@ -23,7 +23,7 @@ CREATE TABLE _implementation (
   UNIQUE KEY implementation_id_UNIQUE (implementation_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Sensitive! Contains connection information of all data sourc';
 
-CREATE TABLE common_form_4_29_67 (
+CREATE TABLE IF NOT EXISTS common_form_4_29_67 (
   implementation_id int(11) NOT NULL DEFAULT '0',
   encounter_id int(11) NOT NULL,
   provider varchar(255) CHARACTER SET utf8 DEFAULT NULL,
@@ -51,13 +51,13 @@ CREATE TABLE common_form_4_29_67 (
   KEY date_entered (date_entered)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE commonlab_tmp (
+CREATE TABLE IF NOT EXISTS commonlab_tmp (
   test_type_id int(11) DEFAULT NULL,
   attribute_type_id int(11) NOT NULL,
   attribute_type_name varchar(255) CHARACTER SET utf8 NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE commonlabtest_attribute (
+CREATE TABLE IF NOT EXISTS commonlabtest_attribute (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   test_attribute_id int(11) NOT NULL,
@@ -83,7 +83,7 @@ CREATE TABLE commonlabtest_attribute (
   KEY commonlabtest_attribute_id_idx (test_attribute_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE commonlabtest_attribute_type (
+CREATE TABLE IF NOT EXISTS commonlabtest_attribute_type (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   test_attribute_type_id int(11) NOT NULL,
@@ -118,7 +118,7 @@ CREATE TABLE commonlabtest_attribute_type (
   KEY commonlabtest_attribute_type_idx (test_attribute_type_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
-CREATE TABLE commonlabtest_sample (
+CREATE TABLE IF NOT EXISTS commonlabtest_sample (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   test_sample_id int(11) NOT NULL,
@@ -156,7 +156,7 @@ CREATE TABLE commonlabtest_sample (
   KEY commonlabtest_sample_idx (test_sample_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE commonlabtest_test (
+CREATE TABLE IF NOT EXISTS commonlabtest_test (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   test_order_id int(11) NOT NULL,
@@ -183,7 +183,7 @@ CREATE TABLE commonlabtest_test (
   KEY commonlabtest_test_order_idx (test_order_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE commonlabtest_type (
+CREATE TABLE IF NOT EXISTS commonlabtest_type (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   test_type_id int(11) NOT NULL,
@@ -211,7 +211,7 @@ CREATE TABLE commonlabtest_type (
   KEY commonlabtest_type_idx (test_type_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE concept (
+CREATE TABLE IF NOT EXISTS concept (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   concept_id int(11) NOT NULL,
@@ -243,7 +243,7 @@ CREATE TABLE concept (
   KEY user_who_retired_concept (retired_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE concept_answer (
+CREATE TABLE IF NOT EXISTS concept_answer (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   concept_answer_id int(11) NOT NULL,
@@ -262,7 +262,7 @@ CREATE TABLE concept_answer (
   KEY answer_answer_drug_fk (answer_drug)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE concept_class (
+CREATE TABLE IF NOT EXISTS concept_class (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   concept_class_id int(11) NOT NULL,
@@ -282,7 +282,7 @@ CREATE TABLE concept_class (
   KEY concept_class_retired_status (retired)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE concept_datatype (
+CREATE TABLE IF NOT EXISTS concept_datatype (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   concept_datatype_id int(11) NOT NULL,
@@ -303,7 +303,7 @@ CREATE TABLE concept_datatype (
   KEY concept_datatype_retired_status (retired)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE concept_description (
+CREATE TABLE IF NOT EXISTS concept_description (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   concept_description_id int(11) NOT NULL,
@@ -322,7 +322,7 @@ CREATE TABLE concept_description (
   KEY user_who_changed_description (changed_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE concept_latest_name (
+CREATE TABLE IF NOT EXISTS concept_latest_name (
   implementation_id int(11) NOT NULL,
   concept_id int(11) NOT NULL,
   default_name bigint(11) DEFAULT NULL,
@@ -331,7 +331,7 @@ CREATE TABLE concept_latest_name (
   PRIMARY KEY (implementation_id,concept_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE concept_map_type (
+CREATE TABLE IF NOT EXISTS concept_map_type (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   concept_map_type_id int(11) NOT NULL,
@@ -355,7 +355,7 @@ CREATE TABLE concept_map_type (
   KEY mapped_user_retired_concept_map_type (retired_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-CREATE TABLE concept_name (
+CREATE TABLE IF NOT EXISTS concept_name (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   concept_id int(11) DEFAULT NULL,
@@ -384,7 +384,7 @@ CREATE TABLE concept_name (
   KEY uesr_who_changed (changed_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE concept_numeric (
+CREATE TABLE IF NOT EXISTS concept_numeric (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   concept_id int(11) NOT NULL DEFAULT '0',
@@ -401,7 +401,7 @@ CREATE TABLE concept_numeric (
   KEY concept_id_index (concept_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE concept_reference_map (
+CREATE TABLE IF NOT EXISTS concept_reference_map (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   concept_map_id int(11) NOT NULL,
@@ -422,7 +422,7 @@ CREATE TABLE concept_reference_map (
   KEY mapped_concept_reference_term (concept_reference_term_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE concept_reference_source (
+CREATE TABLE IF NOT EXISTS concept_reference_source (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   concept_source_id int(11) NOT NULL,
@@ -444,7 +444,7 @@ CREATE TABLE concept_reference_source (
   KEY unique_hl7_code (hl7_code,retired)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE concept_reference_term (
+CREATE TABLE IF NOT EXISTS concept_reference_term (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   concept_reference_term_id int(11) NOT NULL,
@@ -471,7 +471,7 @@ CREATE TABLE concept_reference_term (
   KEY idx_code_concept_reference_term (code)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-CREATE TABLE concept_reference_term_map (
+CREATE TABLE IF NOT EXISTS concept_reference_term_map (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   concept_reference_term_map_id int(11) NOT NULL,
@@ -492,7 +492,7 @@ CREATE TABLE concept_reference_term_map (
   KEY mapped_user_changed_ref_term_map (changed_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-CREATE TABLE concept_set (
+CREATE TABLE IF NOT EXISTS concept_set (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   concept_set_id int(11) NOT NULL,
@@ -509,7 +509,7 @@ CREATE TABLE concept_set (
   KEY idx_concept_set_concept (concept_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE concept_stop_word (
+CREATE TABLE IF NOT EXISTS concept_stop_word (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   concept_stop_word_id int(11) NOT NULL,
@@ -521,12 +521,12 @@ CREATE TABLE concept_stop_word (
   KEY Unique_StopWord_Key (word,locale)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-CREATE TABLE cumulative_xrayed1 (
+CREATE TABLE IF NOT EXISTS cumulative_xrayed1 (
   month_year varchar(37) CHARACTER SET utf8 DEFAULT NULL,
   x_rayed bigint(21) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE dim_concept (
+CREATE TABLE IF NOT EXISTS dim_concept (
   surrogate_id bigint(21) NOT NULL,
   implementation_id int(11) NOT NULL DEFAULT '0',
   concept_id int(11) NOT NULL,
@@ -554,7 +554,7 @@ CREATE TABLE dim_concept (
   KEY uuidx (uuid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE dim_datetime (
+CREATE TABLE IF NOT EXISTS dim_datetime (
   datetime_id bigint(21) NOT NULL AUTO_INCREMENT,
   full_date varchar(50) NOT NULL,
   year int(11) NOT NULL,
@@ -566,7 +566,7 @@ CREATE TABLE dim_datetime (
   KEY full_date (full_date)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE dim_encounter (
+CREATE TABLE IF NOT EXISTS dim_encounter (
   surrogate_id bigint(21) NOT NULL,
   implementation_id int(11) NOT NULL DEFAULT '0',
   encounter_id int(11) NOT NULL,
@@ -592,7 +592,7 @@ CREATE TABLE dim_encounter (
   KEY encounter_type (encounter_type)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE dim_lab_test (
+CREATE TABLE IF NOT EXISTS dim_lab_test (
   surrogate_id bigint(21) NOT NULL,
   implementation_id int(11) NOT NULL,
   test_order_id int(11) NOT NULL,
@@ -624,7 +624,7 @@ CREATE TABLE dim_lab_test (
   KEY lab_reference_number (lab_reference_number)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE dim_lab_test_result (
+CREATE TABLE IF NOT EXISTS dim_lab_test_result (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   test_order_id int(11) NOT NULL,
@@ -651,7 +651,7 @@ CREATE TABLE dim_lab_test_result (
   KEY lab_reference_number (lab_reference_number)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE dim_location (
+CREATE TABLE IF NOT EXISTS dim_location (
   surrogate_id bigint(21) NOT NULL,
   implementation_id int(11) NOT NULL DEFAULT '0',
   location_id int(11) NOT NULL,
@@ -695,7 +695,7 @@ CREATE TABLE dim_location (
   KEY parent (parent_location)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE dim_obs (
+CREATE TABLE IF NOT EXISTS dim_obs (
   surrogate_id bigint(21) NOT NULL,
   implementation_id int(11) NOT NULL DEFAULT '0',
   encounter_id int(11) DEFAULT NULL,
@@ -728,7 +728,7 @@ CREATE TABLE dim_obs (
   KEY encounter_id (encounter_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE dim_patient (
+CREATE TABLE IF NOT EXISTS dim_patient (
   surrogate_id bigint(21) NOT NULL,
   implementation_id int(11) NOT NULL,
   patient_id int(11) NOT NULL,
@@ -789,7 +789,7 @@ CREATE TABLE dim_patient (
   KEY uuid (uuid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE dim_user (
+CREATE TABLE IF NOT EXISTS dim_user (
   surrogate_id bigint(21) NOT NULL,
   implementation_id int(11) NOT NULL,
   user_id int(11) NOT NULL,
@@ -868,7 +868,7 @@ CREATE TABLE dim_user (
   KEY uuid (uuid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE dim_user_form (
+CREATE TABLE IF NOT EXISTS dim_user_form (
   surrogate_id bigint(21) NOT NULL,
   implementation_id int(11) NOT NULL DEFAULT '0',
   user_form_id int(11) NOT NULL,
@@ -890,7 +890,7 @@ CREATE TABLE dim_user_form (
   KEY user_form_type_id (user_form_type_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE dim_user_form_result (
+CREATE TABLE IF NOT EXISTS dim_user_form_result (
   surrogate_id bigint(21) NOT NULL,
   implementation_id int(11) NOT NULL DEFAULT '0',
   user_form_type_id int(11) NOT NULL,
@@ -916,7 +916,7 @@ CREATE TABLE dim_user_form_result (
   KEY user_form_type_id (user_form_type_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE drug (
+CREATE TABLE IF NOT EXISTS drug (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   drug_id int(11) NOT NULL,
@@ -947,7 +947,7 @@ CREATE TABLE drug (
   KEY route_concept (route)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE drug_ingredient (
+CREATE TABLE IF NOT EXISTS drug_ingredient (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   drug_id int(11) NOT NULL,
@@ -961,7 +961,7 @@ CREATE TABLE drug_ingredient (
   KEY drug_ingredient_ingredient_id_fk (ingredient_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE drug_order (
+CREATE TABLE IF NOT EXISTS drug_order (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   order_id int(11) NOT NULL DEFAULT '0',
@@ -991,7 +991,7 @@ CREATE TABLE drug_order (
   KEY drug_order_frequency_fk (frequency)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE drug_orders_extn (
+CREATE TABLE IF NOT EXISTS drug_orders_extn (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   id int(11) NOT NULL,
@@ -1021,7 +1021,7 @@ CREATE TABLE drug_orders_extn (
   KEY order_id (order_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
-CREATE TABLE drug_reference_map (
+CREATE TABLE IF NOT EXISTS drug_reference_map (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   drug_reference_map_id int(11) NOT NULL,
@@ -1047,7 +1047,7 @@ CREATE TABLE drug_reference_map (
   KEY user_who_retired_drug_reference_map (retired_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE encounter (
+CREATE TABLE IF NOT EXISTS encounter (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   encounter_id int(11) NOT NULL,
@@ -1081,7 +1081,7 @@ CREATE TABLE encounter (
   KEY encounter_id (encounter_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE encounter_provider (
+CREATE TABLE IF NOT EXISTS encounter_provider (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   encounter_provider_id int(11) NOT NULL,
@@ -1107,7 +1107,7 @@ CREATE TABLE encounter_provider (
   KEY encounter_provider_voided_by (voided_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE encounter_role (
+CREATE TABLE IF NOT EXISTS encounter_role (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   encounter_role_id int(11) NOT NULL,
@@ -1130,7 +1130,7 @@ CREATE TABLE encounter_role (
   KEY encounter_role_retired_by_fk (retired_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE encounter_type (
+CREATE TABLE IF NOT EXISTS encounter_type (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   encounter_type_id int(11) NOT NULL,
@@ -1158,7 +1158,7 @@ CREATE TABLE encounter_type (
   KEY uesr_who_changed (changed_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE fact_childtb_dsss (
+CREATE TABLE IF NOT EXISTS fact_childtb_dsss (
   implementation_id int(11) NOT NULL,
   datetime_id bigint(21) NOT NULL,
   location_id int(11) NOT NULL,
@@ -1184,7 +1184,7 @@ CREATE TABLE fact_childtb_dsss (
   End_of_followup decimal(23,0) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE fact_childtb_sd (
+CREATE TABLE IF NOT EXISTS fact_childtb_sd (
   implementation_id int(11) NOT NULL,
   datetime_id bigint(21) NOT NULL,
   location_id int(11) NOT NULL,
@@ -1200,7 +1200,7 @@ CREATE TABLE fact_childtb_sd (
   yield decimal(10,0) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE fact_childtb_sd2 (
+CREATE TABLE IF NOT EXISTS fact_childtb_sd2 (
   implementation_id int(11) NOT NULL,
   datetime_id bigint(21) NOT NULL,
   location_id int(11) NOT NULL,
@@ -1216,7 +1216,7 @@ CREATE TABLE fact_childtb_sd2 (
   yield decimal(10,0) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE fact_childtb_ucab (
+CREATE TABLE IF NOT EXISTS fact_childtb_ucab (
   implementation_id int(11) NOT NULL,
   datetime_id bigint(21) NOT NULL,
   location_id int(11) NOT NULL,
@@ -1230,7 +1230,7 @@ CREATE TABLE fact_childtb_ucab (
   female_10to14 decimal(10,0) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE fact_CHTB_Diagnose (
+CREATE TABLE IF NOT EXISTS fact_CHTB_Diagnose (
   implementation_id int(11) NOT NULL,
   datetime_id bigint(21) NOT NULL,
   location_id int(11) NOT NULL,
@@ -1271,7 +1271,7 @@ CREATE TABLE fact_CHTB_Diagnose (
   Lost_To_FollowUp decimal(23,0) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
-CREATE TABLE fact_chtb_diagnostic_investigations (
+CREATE TABLE IF NOT EXISTS fact_chtb_diagnostic_investigations (
   implementation_id int(11) NOT NULL,
   datetime_id bigint(21) NOT NULL,
   location_id int(11) NOT NULL,
@@ -1293,7 +1293,7 @@ CREATE TABLE fact_chtb_diagnostic_investigations (
   percentage_antibiotic_patients decimal(10,2) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
-CREATE TABLE fact_chtb_ltf_antibiotic_treatment (
+CREATE TABLE IF NOT EXISTS fact_chtb_ltf_antibiotic_treatment (
   implementation_id int(11) NOT NULL,
   datetime_id bigint(21) NOT NULL,
   location_id int(11) NOT NULL,
@@ -1312,7 +1312,7 @@ CREATE TABLE fact_chtb_ltf_antibiotic_treatment (
   Percentage_TB_Treatment_Initiated decimal(10,2) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
-CREATE TABLE fact_chtb_ltf_clinical_evaluation (
+CREATE TABLE IF NOT EXISTS fact_chtb_ltf_clinical_evaluation (
   implementation_id int(11) NOT NULL,
   datetime_id bigint(21) NOT NULL,
   location_id int(11) NOT NULL,
@@ -1327,7 +1327,7 @@ CREATE TABLE fact_chtb_ltf_clinical_evaluation (
   Percentage_Not_Tb_Presumptive decimal(10,2) DEFAULT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
-CREATE TABLE fact_chtb_treatment_initiation (
+CREATE TABLE IF NOT EXISTS fact_chtb_treatment_initiation (
   implementation_id int(11) NOT NULL DEFAULT '0',
   datetime_id bigint(21) NOT NULL DEFAULT '0',
   location_id int(11) DEFAULT NULL,
@@ -1354,7 +1354,7 @@ CREATE TABLE fact_chtb_treatment_initiation (
   treatment_initiated_no decimal(23,0) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE field (
+CREATE TABLE IF NOT EXISTS field (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   field_id int(11) NOT NULL,
@@ -1385,7 +1385,7 @@ CREATE TABLE field (
   KEY user_who_retired_field (retired_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE field_answer (
+CREATE TABLE IF NOT EXISTS field_answer (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   field_id int(11) NOT NULL DEFAULT '0',
@@ -1399,7 +1399,7 @@ CREATE TABLE field_answer (
   KEY user_who_created_field_answer (creator)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE field_type (
+CREATE TABLE IF NOT EXISTS field_type (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   field_type_id int(11) NOT NULL,
@@ -1414,7 +1414,7 @@ CREATE TABLE field_type (
   KEY user_who_created_field_type (creator)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE form (
+CREATE TABLE IF NOT EXISTS form (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   form_id int(11) NOT NULL,
@@ -1446,7 +1446,7 @@ CREATE TABLE form (
   KEY user_who_retired_form (retired_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE form_field (
+CREATE TABLE IF NOT EXISTS form_field (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   form_field_id int(11) NOT NULL,
@@ -1474,7 +1474,7 @@ CREATE TABLE form_field (
   KEY form_field_hierarchy (parent_form_field)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE gfatm_element (
+CREATE TABLE IF NOT EXISTS gfatm_element (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   element_id int(11) NOT NULL,
@@ -1499,7 +1499,7 @@ CREATE TABLE gfatm_element (
   KEY element_idx (element_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE gfatm_location (
+CREATE TABLE IF NOT EXISTS gfatm_location (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   location_id int(11) NOT NULL,
@@ -1539,7 +1539,7 @@ CREATE TABLE gfatm_location (
   KEY location_idx (implementation_id,location_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE gfatm_location_attribute (
+CREATE TABLE IF NOT EXISTS gfatm_location_attribute (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   location_attribute_id int(11) NOT NULL,
@@ -1564,7 +1564,7 @@ CREATE TABLE gfatm_location_attribute (
   KEY location_attribute_idx (location_attribute_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE gfatm_location_attribute_type (
+CREATE TABLE IF NOT EXISTS gfatm_location_attribute_type (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   location_attribute_type_id int(11) NOT NULL,
@@ -1590,7 +1590,7 @@ CREATE TABLE gfatm_location_attribute_type (
   KEY location_attribute_type_id (location_attribute_type_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE gfatm_user_attribute (
+CREATE TABLE IF NOT EXISTS gfatm_user_attribute (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   user_attribute_id int(11) NOT NULL,
@@ -1615,7 +1615,7 @@ CREATE TABLE gfatm_user_attribute (
   KEY fk_user_attribute_user_attribute_type_idx (user_attribute_type_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE gfatm_user_attribute_type (
+CREATE TABLE IF NOT EXISTS gfatm_user_attribute_type (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   user_attribute_type_id int(11) NOT NULL,
@@ -1642,7 +1642,7 @@ CREATE TABLE gfatm_user_attribute_type (
   KEY fk_user_attribute_type_location2_idx (changed_at)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE gfatm_user_form (
+CREATE TABLE IF NOT EXISTS gfatm_user_form (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   user_form_id int(11) NOT NULL,
@@ -1668,7 +1668,7 @@ CREATE TABLE gfatm_user_form (
   KEY user_form_id (implementation_id,user_form_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE gfatm_user_form_result (
+CREATE TABLE IF NOT EXISTS gfatm_user_form_result (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   user_form_result_id int(11) NOT NULL,
@@ -1693,7 +1693,7 @@ CREATE TABLE gfatm_user_form_result (
   KEY user_form_result_idx (implementation_id,user_form_result_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE gfatm_user_form_type (
+CREATE TABLE IF NOT EXISTS gfatm_user_form_type (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   user_form_type_id int(11) NOT NULL,
@@ -1717,7 +1717,7 @@ CREATE TABLE gfatm_user_form_type (
   KEY user_form_type_id (implementation_id,user_form_type_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE gfatm_user_location (
+CREATE TABLE IF NOT EXISTS gfatm_user_location (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   user_id int(11) NOT NULL,
@@ -1739,7 +1739,7 @@ CREATE TABLE gfatm_user_location (
   KEY user_id (implementation_id,user_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE gfatm_user_role (
+CREATE TABLE IF NOT EXISTS gfatm_user_role (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   user_id int(11) NOT NULL,
@@ -1761,7 +1761,7 @@ CREATE TABLE gfatm_user_role (
   KEY user_idx (implementation_id,user_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE gfatm_users (
+CREATE TABLE IF NOT EXISTS gfatm_users (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   user_id int(11) NOT NULL,
@@ -1791,7 +1791,7 @@ CREATE TABLE gfatm_users (
   KEY user_idx (implementation_id,user_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE lab_afb_culture_dst (
+CREATE TABLE IF NOT EXISTS lab_afb_culture_dst (
   surrogate_id bigint(21) NOT NULL,
   implementation_id int(11) NOT NULL,
   test_order_id int(11) NOT NULL,
@@ -1829,7 +1829,7 @@ CREATE TABLE lab_afb_culture_dst (
   KEY test_order_id (test_order_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE lab_afb_smear (
+CREATE TABLE IF NOT EXISTS lab_afb_smear (
   surrogate_id bigint(21) NOT NULL,
   implementation_id int(11) NOT NULL,
   test_order_id int(11) NOT NULL,
@@ -1846,7 +1846,7 @@ CREATE TABLE lab_afb_smear (
   KEY test_order_id (test_order_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE lab_audiometry (
+CREATE TABLE IF NOT EXISTS lab_audiometry (
   surrogate_id bigint(21) NOT NULL,
   implementation_id int(11) NOT NULL,
   test_order_id int(11) NOT NULL,
@@ -1864,7 +1864,7 @@ CREATE TABLE lab_audiometry (
   KEY test_order_id (test_order_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE lab_cd4_result (
+CREATE TABLE IF NOT EXISTS lab_cd4_result (
   surrogate_id bigint(21) NOT NULL,
   implementation_id int(11) NOT NULL,
   test_order_id int(11) NOT NULL,
@@ -1883,7 +1883,7 @@ CREATE TABLE lab_cd4_result (
   KEY test_order_id (test_order_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE lab_creatinine (
+CREATE TABLE IF NOT EXISTS lab_creatinine (
   surrogate_id bigint(21) NOT NULL,
   implementation_id int(11) NOT NULL,
   test_order_id int(11) NOT NULL,
@@ -1901,7 +1901,7 @@ CREATE TABLE lab_creatinine (
   KEY test_order_id (test_order_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE lab_culture_done (
+CREATE TABLE IF NOT EXISTS lab_culture_done (
   surrogate_id bigint(21) NOT NULL,
   implementation_id int(11) NOT NULL,
   test_order_id int(11) NOT NULL,
@@ -1920,7 +1920,7 @@ CREATE TABLE lab_culture_done (
   KEY test_order_id (test_order_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE lab_ecg_test (
+CREATE TABLE IF NOT EXISTS lab_ecg_test (
   surrogate_id bigint(21) NOT NULL,
   implementation_id int(11) NOT NULL,
   test_order_id int(11) NOT NULL,
@@ -1945,7 +1945,7 @@ CREATE TABLE lab_ecg_test (
   KEY test_order_id (test_order_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE lab_electrolytes (
+CREATE TABLE IF NOT EXISTS lab_electrolytes (
   surrogate_id bigint(21) NOT NULL,
   implementation_id int(11) NOT NULL,
   test_order_id int(11) NOT NULL,
@@ -1981,7 +1981,7 @@ CREATE TABLE lab_electrolytes (
   KEY test_order_id (test_order_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE lab_hba1c_test (
+CREATE TABLE IF NOT EXISTS lab_hba1c_test (
   surrogate_id bigint(21) NOT NULL,
   implementation_id int(11) NOT NULL,
   test_order_id int(11) NOT NULL,
@@ -1998,7 +1998,7 @@ CREATE TABLE lab_hba1c_test (
   KEY test_order_id (test_order_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE lab_hepb_result (
+CREATE TABLE IF NOT EXISTS lab_hepb_result (
   surrogate_id bigint(21) NOT NULL,
   implementation_id int(11) NOT NULL,
   test_order_id int(11) NOT NULL,
@@ -2014,7 +2014,7 @@ CREATE TABLE lab_hepb_result (
   KEY test_order_id (test_order_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE lab_hepc_result (
+CREATE TABLE IF NOT EXISTS lab_hepc_result (
   surrogate_id bigint(21) NOT NULL,
   implementation_id int(11) NOT NULL,
   test_order_id int(11) NOT NULL,
@@ -2030,7 +2030,7 @@ CREATE TABLE lab_hepc_result (
   KEY test_order_id (test_order_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE lab_hiv_test (
+CREATE TABLE IF NOT EXISTS lab_hiv_test (
   surrogate_id bigint(21) NOT NULL,
   implementation_id int(11) NOT NULL,
   test_order_id int(11) NOT NULL,
@@ -2047,7 +2047,7 @@ CREATE TABLE lab_hiv_test (
   KEY test_order_id (test_order_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE lab_lfts (
+CREATE TABLE IF NOT EXISTS lab_lfts (
   surrogate_id bigint(21) NOT NULL,
   implementation_id int(11) NOT NULL,
   test_order_id int(11) NOT NULL,
@@ -2076,7 +2076,7 @@ CREATE TABLE lab_lfts (
   KEY test_order_id (test_order_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE lab_qft (
+CREATE TABLE IF NOT EXISTS lab_qft (
   surrogate_id bigint(21) NOT NULL,
   implementation_id int(11) NOT NULL,
   test_order_id int(11) NOT NULL,
@@ -2102,7 +2102,7 @@ CREATE TABLE lab_qft (
   KEY test_order_id (test_order_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE lab_refer_esr (
+CREATE TABLE IF NOT EXISTS lab_refer_esr (
   surrogate_id bigint(21) NOT NULL,
   implementation_id int(11) NOT NULL,
   test_order_id int(11) NOT NULL,
@@ -2120,7 +2120,7 @@ CREATE TABLE lab_refer_esr (
   KEY test_order_id (test_order_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE lab_tsh (
+CREATE TABLE IF NOT EXISTS lab_tsh (
   surrogate_id bigint(21) NOT NULL,
   implementation_id int(11) NOT NULL,
   test_order_id int(11) NOT NULL,
@@ -2138,7 +2138,7 @@ CREATE TABLE lab_tsh (
   KEY test_order_id (test_order_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE lab_urea_value (
+CREATE TABLE IF NOT EXISTS lab_urea_value (
   surrogate_id bigint(21) NOT NULL,
   implementation_id int(11) NOT NULL,
   test_order_id int(11) NOT NULL,
@@ -2156,7 +2156,7 @@ CREATE TABLE lab_urea_value (
   KEY test_order_id (test_order_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE location (
+CREATE TABLE IF NOT EXISTS location (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   location_id int(11) NOT NULL,
@@ -2196,7 +2196,7 @@ CREATE TABLE location (
   KEY location_idx (location_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE location_attribute (
+CREATE TABLE IF NOT EXISTS location_attribute (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   location_attribute_id int(11) NOT NULL,
@@ -2222,7 +2222,7 @@ CREATE TABLE location_attribute (
   KEY location_attribute_idx (location_attribute_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE location_attribute_merged (
+CREATE TABLE IF NOT EXISTS location_attribute_merged (
   implementation_id int(11) NOT NULL,
   location_id int(11) NOT NULL,
   location_identifier text CHARACTER SET utf8,
@@ -2246,7 +2246,7 @@ CREATE TABLE location_attribute_merged (
   BLANK char(0) CHARACTER SET utf8 NOT NULL DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE location_attribute_type (
+CREATE TABLE IF NOT EXISTS location_attribute_type (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   location_attribute_type_id int(11) NOT NULL,
@@ -2275,7 +2275,7 @@ CREATE TABLE location_attribute_type (
   KEY location_attribute_type_retired_by_fk (retired_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE location_tag (
+CREATE TABLE IF NOT EXISTS location_tag (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   location_tag_id int(11) NOT NULL,
@@ -2297,7 +2297,7 @@ CREATE TABLE location_tag (
   KEY location_tag_changed_by (changed_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE location_tag_map (
+CREATE TABLE IF NOT EXISTS location_tag_map (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   location_id int(11) NOT NULL,
@@ -2306,7 +2306,7 @@ CREATE TABLE location_tag_map (
   KEY location_tag_map_tag (location_tag_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE obs (
+CREATE TABLE IF NOT EXISTS obs (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   obs_id int(11) NOT NULL,
@@ -2358,7 +2358,7 @@ CREATE TABLE obs (
   KEY obs_idx (obs_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE orders (
+CREATE TABLE IF NOT EXISTS orders (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   order_id int(11) NOT NULL,
@@ -2404,7 +2404,7 @@ CREATE TABLE orders (
   KEY orders_order_group_id_fk (order_group_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE patient (
+CREATE TABLE IF NOT EXISTS patient (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   patient_id int(11) NOT NULL,
@@ -2423,7 +2423,7 @@ CREATE TABLE patient (
   KEY patient_idx (patient_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE patient_identifier (
+CREATE TABLE IF NOT EXISTS patient_identifier (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   patient_identifier_id int(11) NOT NULL,
@@ -2454,7 +2454,7 @@ CREATE TABLE patient_identifier (
   KEY patient_identifier_idx (patient_identifier_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE patient_identifier_type (
+CREATE TABLE IF NOT EXISTS patient_identifier_type (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   patient_identifier_type_id int(11) NOT NULL,
@@ -2481,7 +2481,7 @@ CREATE TABLE patient_identifier_type (
   KEY user_who_retired_patient_identifier_type (retired_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE patient_latest_identifier (
+CREATE TABLE IF NOT EXISTS patient_latest_identifier (
   implementation_id int(11) NOT NULL,
   patient_id int(11) NOT NULL DEFAULT '0',
   identifier_type int(11) NOT NULL DEFAULT '0',
@@ -2490,7 +2490,7 @@ CREATE TABLE patient_latest_identifier (
   KEY identifier_id_index (patient_id,identifier_type,max_patient_identifier_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE patient_program (
+CREATE TABLE IF NOT EXISTS patient_program (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   patient_program_id int(11) NOT NULL,
@@ -2521,7 +2521,7 @@ CREATE TABLE patient_program (
   KEY patient_program_idx (patient_program_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE patient_state (
+CREATE TABLE IF NOT EXISTS patient_state (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   patient_state_id int(11) NOT NULL,
@@ -2547,7 +2547,7 @@ CREATE TABLE patient_state (
   KEY patient_state_voider (voided_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE person (
+CREATE TABLE IF NOT EXISTS person (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   person_id int(11) NOT NULL,
@@ -2579,7 +2579,7 @@ CREATE TABLE person (
   KEY person_id (person_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE person_address (
+CREATE TABLE IF NOT EXISTS person_address (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   person_address_id int(11) NOT NULL,
@@ -2618,7 +2618,7 @@ CREATE TABLE person_address (
   KEY person_address_idx (person_address_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE person_attribute (
+CREATE TABLE IF NOT EXISTS person_attribute (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   person_attribute_id int(11) NOT NULL,
@@ -2643,7 +2643,7 @@ CREATE TABLE person_attribute (
   KEY attribute_voider (voided_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE person_attribute_merged (
+CREATE TABLE IF NOT EXISTS person_attribute_merged (
   implementation_id int(11) NOT NULL,
   person_id int(11) NOT NULL DEFAULT '0',
   race text CHARACTER SET utf8,
@@ -2679,7 +2679,7 @@ CREATE TABLE person_attribute_merged (
   PRIMARY KEY (implementation_id,person_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE person_attribute_type (
+CREATE TABLE IF NOT EXISTS person_attribute_type (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   person_attribute_type_id int(11) NOT NULL,
@@ -2710,7 +2710,7 @@ CREATE TABLE person_attribute_type (
   KEY privilege_which_can_edit (edit_privilege)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE person_latest_address (
+CREATE TABLE IF NOT EXISTS person_latest_address (
   surrogate_id int(11) NOT NULL DEFAULT '0',
   implementation_id int(11) NOT NULL,
   person_address_id int(11) NOT NULL,
@@ -2744,7 +2744,7 @@ CREATE TABLE person_latest_address (
   KEY person_index (person_id,person_address_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE person_latest_name (
+CREATE TABLE IF NOT EXISTS person_latest_name (
   surrogate_id int(11) NOT NULL DEFAULT '0',
   implementation_id int(11) NOT NULL,
   person_name_id int(11) NOT NULL,
@@ -2771,7 +2771,7 @@ CREATE TABLE person_latest_name (
   KEY person_index (person_id,person_name_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE person_name (
+CREATE TABLE IF NOT EXISTS person_name (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   person_name_id int(11) NOT NULL,
@@ -2806,7 +2806,7 @@ CREATE TABLE person_name (
   KEY person_name_idx (person_name_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE privilege (
+CREATE TABLE IF NOT EXISTS privilege (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   privilege varchar(255) NOT NULL,
@@ -2816,7 +2816,7 @@ CREATE TABLE privilege (
   KEY privilege_uuid_index (uuid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE program (
+CREATE TABLE IF NOT EXISTS program (
   program_id int(11) NOT NULL AUTO_INCREMENT,
   concept_id int(11) NOT NULL DEFAULT '0',
   outcomes_concept_id int(11) DEFAULT NULL,
@@ -2836,7 +2836,7 @@ CREATE TABLE program (
   KEY program_outcomes_concept_id_fk (outcomes_concept_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
-CREATE TABLE provider (
+CREATE TABLE IF NOT EXISTS provider (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   provider_id int(11) NOT NULL,
@@ -2862,7 +2862,7 @@ CREATE TABLE provider (
   KEY identifier (identifier)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE provider_attribute (
+CREATE TABLE IF NOT EXISTS provider_attribute (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   provider_attribute_id int(11) NOT NULL,
@@ -2888,7 +2888,7 @@ CREATE TABLE provider_attribute (
   KEY provider_attribute_provider_attribute_idx (provider_attribute_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE provider_attribute_type (
+CREATE TABLE IF NOT EXISTS provider_attribute_type (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   provider_attribute_type_id int(11) NOT NULL,
@@ -2916,7 +2916,7 @@ CREATE TABLE provider_attribute_type (
   KEY provider_attribute_type_retired_by_fk (retired_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE relationship (
+CREATE TABLE IF NOT EXISTS relationship (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   relationship_id int(11) NOT NULL,
@@ -2944,7 +2944,7 @@ CREATE TABLE relationship (
   KEY relationship_changed_by (changed_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE relationship_type (
+CREATE TABLE IF NOT EXISTS relationship_type (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   relationship_type_id int(11) NOT NULL,
@@ -2969,7 +2969,7 @@ CREATE TABLE relationship_type (
   KEY relationship_type_changed_by (changed_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE role (
+CREATE TABLE IF NOT EXISTS role (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   role varchar(50) NOT NULL DEFAULT '',
@@ -2979,7 +2979,7 @@ CREATE TABLE role (
   KEY role_uuid_index (uuid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE role_privilege (
+CREATE TABLE IF NOT EXISTS role_privilege (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   role varchar(50) NOT NULL DEFAULT '',
@@ -2988,7 +2988,7 @@ CREATE TABLE role_privilege (
   KEY role_privilege_to_role (role)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE role_role (
+CREATE TABLE IF NOT EXISTS role_role (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   parent_role varchar(50) NOT NULL DEFAULT '',
@@ -2997,7 +2997,7 @@ CREATE TABLE role_role (
   KEY inherited_role (child_role)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_commonlabtest_attribute (
+CREATE TABLE IF NOT EXISTS tmp_commonlabtest_attribute (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   test_attribute_id int(11) NOT NULL,
@@ -3022,7 +3022,7 @@ CREATE TABLE tmp_commonlabtest_attribute (
   KEY commonlabtest_attribute_id_idx (test_attribute_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE tmp_commonlabtest_attribute_type (
+CREATE TABLE IF NOT EXISTS tmp_commonlabtest_attribute_type (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   test_attribute_type_id int(11) NOT NULL,
@@ -3056,7 +3056,7 @@ CREATE TABLE tmp_commonlabtest_attribute_type (
   KEY commonlabtest_attribute_type_idx (test_attribute_type_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE tmp_commonlabtest_sample (
+CREATE TABLE IF NOT EXISTS tmp_commonlabtest_sample (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   test_sample_id int(11) NOT NULL,
@@ -3093,7 +3093,7 @@ CREATE TABLE tmp_commonlabtest_sample (
   KEY commonlabtest_sample_idx (test_sample_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE tmp_commonlabtest_test (
+CREATE TABLE IF NOT EXISTS tmp_commonlabtest_test (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   test_order_id int(11) NOT NULL,
@@ -3119,7 +3119,7 @@ CREATE TABLE tmp_commonlabtest_test (
   KEY commonlabtest_test_order_idx (test_order_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE tmp_commonlabtest_type (
+CREATE TABLE IF NOT EXISTS tmp_commonlabtest_type (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   test_type_id int(11) NOT NULL,
@@ -3146,7 +3146,7 @@ CREATE TABLE tmp_commonlabtest_type (
   KEY commonlabtest_type_idx (test_type_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE tmp_concept (
+CREATE TABLE IF NOT EXISTS tmp_concept (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   concept_id int(11) NOT NULL,
@@ -3176,7 +3176,7 @@ CREATE TABLE tmp_concept (
   KEY user_who_retired_concept (retired_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_concept_answer (
+CREATE TABLE IF NOT EXISTS tmp_concept_answer (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   concept_answer_id int(11) NOT NULL,
@@ -3194,7 +3194,7 @@ CREATE TABLE tmp_concept_answer (
   KEY answer_answer_drug_fk (answer_drug)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_concept_class (
+CREATE TABLE IF NOT EXISTS tmp_concept_class (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   concept_class_id int(11) NOT NULL,
@@ -3213,7 +3213,7 @@ CREATE TABLE tmp_concept_class (
   KEY concept_class_retired_status (retired)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_concept_datatype (
+CREATE TABLE IF NOT EXISTS tmp_concept_datatype (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   concept_datatype_id int(11) NOT NULL,
@@ -3233,7 +3233,7 @@ CREATE TABLE tmp_concept_datatype (
   KEY concept_datatype_retired_status (retired)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_concept_description (
+CREATE TABLE IF NOT EXISTS tmp_concept_description (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   concept_description_id int(11) NOT NULL,
@@ -3251,7 +3251,7 @@ CREATE TABLE tmp_concept_description (
   KEY user_who_changed_description (changed_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_concept_map_type (
+CREATE TABLE IF NOT EXISTS tmp_concept_map_type (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   concept_map_type_id int(11) NOT NULL,
@@ -3274,7 +3274,7 @@ CREATE TABLE tmp_concept_map_type (
   KEY mapped_user_retired_concept_map_type (retired_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
-CREATE TABLE tmp_concept_name (
+CREATE TABLE IF NOT EXISTS tmp_concept_name (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   concept_id int(11) DEFAULT NULL,
@@ -3301,7 +3301,7 @@ CREATE TABLE tmp_concept_name (
   KEY user_who_voided_name (voided_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_concept_numeric (
+CREATE TABLE IF NOT EXISTS tmp_concept_numeric (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   concept_id int(11) NOT NULL DEFAULT '0',
@@ -3317,7 +3317,7 @@ CREATE TABLE tmp_concept_numeric (
   KEY concept_id_index (concept_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_concept_set (
+CREATE TABLE IF NOT EXISTS tmp_concept_set (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   concept_set_id int(11) NOT NULL,
@@ -3333,7 +3333,7 @@ CREATE TABLE tmp_concept_set (
   KEY idx_concept_set_concept (concept_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_dim_encounter (
+CREATE TABLE IF NOT EXISTS tmp_dim_encounter (
   surrogate_id int(11) NOT NULL DEFAULT '0',
   implementation_id int(11) NOT NULL,
   encounter_id int(11) NOT NULL,
@@ -3352,7 +3352,7 @@ CREATE TABLE tmp_dim_encounter (
   uuid char(38) CHARACTER SET utf8 NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE tmp_dim_patient (
+CREATE TABLE IF NOT EXISTS tmp_dim_patient (
   surrogate_id int(11) NOT NULL DEFAULT '0',
   implementation_id int(11) NOT NULL,
   patient_id int(11) NOT NULL,
@@ -3409,7 +3409,7 @@ CREATE TABLE tmp_dim_patient (
   patient_type text CHARACTER SET utf8
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE tmp_drug (
+CREATE TABLE IF NOT EXISTS tmp_drug (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   drug_id int(11) NOT NULL,
@@ -3438,7 +3438,7 @@ CREATE TABLE tmp_drug (
   KEY route_concept (route)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_drug_ingredient (
+CREATE TABLE IF NOT EXISTS tmp_drug_ingredient (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   drug_id int(11) NOT NULL,
@@ -3450,7 +3450,7 @@ CREATE TABLE tmp_drug_ingredient (
   KEY drug_ingredient_ingredient_id_fk (ingredient_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_drug_order (
+CREATE TABLE IF NOT EXISTS tmp_drug_order (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   order_id int(11) NOT NULL DEFAULT '0',
@@ -3479,7 +3479,7 @@ CREATE TABLE tmp_drug_order (
   KEY drug_order_frequency_fk (frequency)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_drug_orders_extn (
+CREATE TABLE IF NOT EXISTS tmp_drug_orders_extn (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   id int(11) NOT NULL,
@@ -3508,7 +3508,7 @@ CREATE TABLE tmp_drug_orders_extn (
   KEY order_id (order_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1;
 
-CREATE TABLE tmp_drug_reference_map (
+CREATE TABLE IF NOT EXISTS tmp_drug_reference_map (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   drug_reference_map_id int(11) NOT NULL,
@@ -3532,7 +3532,7 @@ CREATE TABLE tmp_drug_reference_map (
   KEY user_who_retired_drug_reference_map (retired_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_encounter (
+CREATE TABLE IF NOT EXISTS tmp_encounter (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   encounter_id int(11) NOT NULL,
@@ -3564,7 +3564,7 @@ CREATE TABLE tmp_encounter (
   KEY encounter_visit_id_fk (visit_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_encounter_provider (
+CREATE TABLE IF NOT EXISTS tmp_encounter_provider (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   encounter_provider_id int(11) NOT NULL,
@@ -3589,7 +3589,7 @@ CREATE TABLE tmp_encounter_provider (
   KEY encounter_provider_voided_by (voided_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_encounter_role (
+CREATE TABLE IF NOT EXISTS tmp_encounter_role (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   encounter_role_id int(11) NOT NULL,
@@ -3611,7 +3611,7 @@ CREATE TABLE tmp_encounter_role (
   KEY encounter_role_retired_by_fk (retired_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_encounter_type (
+CREATE TABLE IF NOT EXISTS tmp_encounter_type (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   encounter_type_id int(11) NOT NULL,
@@ -3637,7 +3637,7 @@ CREATE TABLE tmp_encounter_type (
   KEY privilege_which_can_edit_encounter_type (edit_privilege)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_field (
+CREATE TABLE IF NOT EXISTS tmp_field (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   field_id int(11) NOT NULL,
@@ -3667,7 +3667,7 @@ CREATE TABLE tmp_field (
   KEY user_who_retired_field (retired_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_field_answer (
+CREATE TABLE IF NOT EXISTS tmp_field_answer (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   field_id int(11) NOT NULL DEFAULT '0',
@@ -3680,7 +3680,7 @@ CREATE TABLE tmp_field_answer (
   KEY user_who_created_field_answer (creator)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_field_type (
+CREATE TABLE IF NOT EXISTS tmp_field_type (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   field_type_id int(11) NOT NULL,
@@ -3694,7 +3694,7 @@ CREATE TABLE tmp_field_type (
   KEY user_who_created_field_type (creator)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_form (
+CREATE TABLE IF NOT EXISTS tmp_form (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   form_id int(11) NOT NULL,
@@ -3725,7 +3725,7 @@ CREATE TABLE tmp_form (
   KEY user_who_retired_form (retired_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_form_field (
+CREATE TABLE IF NOT EXISTS tmp_form_field (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   form_field_id int(11) NOT NULL,
@@ -3752,7 +3752,7 @@ CREATE TABLE tmp_form_field (
   KEY form_field_hierarchy (parent_form_field)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_gfatm_element (
+CREATE TABLE IF NOT EXISTS tmp_gfatm_element (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   element_id int(11) NOT NULL,
@@ -3775,7 +3775,7 @@ CREATE TABLE tmp_gfatm_element (
   KEY fk_element_location2_idx (changed_at)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_gfatm_location (
+CREATE TABLE IF NOT EXISTS tmp_gfatm_location (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   location_id int(11) NOT NULL,
@@ -3813,7 +3813,7 @@ CREATE TABLE tmp_gfatm_location (
   KEY fk_location_users2_idx (changed_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_gfatm_location_attribute (
+CREATE TABLE IF NOT EXISTS tmp_gfatm_location_attribute (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   location_attribute_id int(11) NOT NULL,
@@ -3836,7 +3836,7 @@ CREATE TABLE tmp_gfatm_location_attribute (
   KEY fk_location_attribute_location3_idx (changed_at)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_gfatm_location_attribute_type (
+CREATE TABLE IF NOT EXISTS tmp_gfatm_location_attribute_type (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   location_attribute_type_id int(11) NOT NULL,
@@ -3860,7 +3860,7 @@ CREATE TABLE tmp_gfatm_location_attribute_type (
   KEY fk_location_attribute_type_location2_idx (changed_at)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_gfatm_user_attribute (
+CREATE TABLE IF NOT EXISTS tmp_gfatm_user_attribute (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   user_attribute_id int(11) NOT NULL,
@@ -3885,7 +3885,7 @@ CREATE TABLE tmp_gfatm_user_attribute (
   KEY fk_user_attribute_user_attribute_type_idx (user_attribute_type_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_gfatm_user_attribute_type (
+CREATE TABLE IF NOT EXISTS tmp_gfatm_user_attribute_type (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   user_attribute_type_id int(11) NOT NULL,
@@ -3911,7 +3911,7 @@ CREATE TABLE tmp_gfatm_user_attribute_type (
   KEY fk_user_attribute_type_location2_idx (changed_at)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_gfatm_user_form (
+CREATE TABLE IF NOT EXISTS tmp_gfatm_user_form (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   user_form_id int(11) NOT NULL,
@@ -3935,7 +3935,7 @@ CREATE TABLE tmp_gfatm_user_form (
   KEY fk_user_form_location2_idx (changed_at)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_gfatm_user_form_result (
+CREATE TABLE IF NOT EXISTS tmp_gfatm_user_form_result (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   user_form_result_id int(11) NOT NULL,
@@ -3958,7 +3958,7 @@ CREATE TABLE tmp_gfatm_user_form_result (
   KEY fk_user_form_result_user_form_idx (user_form_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_gfatm_user_form_type (
+CREATE TABLE IF NOT EXISTS tmp_gfatm_user_form_type (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   user_form_type_id int(11) NOT NULL,
@@ -3980,7 +3980,7 @@ CREATE TABLE tmp_gfatm_user_form_type (
   KEY FKC9467A6187F9F544 (changed_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_gfatm_user_location (
+CREATE TABLE IF NOT EXISTS tmp_gfatm_user_location (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   user_id int(11) NOT NULL,
@@ -4000,7 +4000,7 @@ CREATE TABLE tmp_gfatm_user_location (
   KEY fk_user_location_location3_idx (changed_at)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_gfatm_user_role (
+CREATE TABLE IF NOT EXISTS tmp_gfatm_user_role (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   user_id int(11) NOT NULL,
@@ -4020,7 +4020,7 @@ CREATE TABLE tmp_gfatm_user_role (
   KEY fk_user_role_location2_idx (changed_at)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_gfatm_users (
+CREATE TABLE IF NOT EXISTS tmp_gfatm_users (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   user_id int(11) NOT NULL,
@@ -4048,7 +4048,7 @@ CREATE TABLE tmp_gfatm_users (
   KEY fk_users_users2_idx (changed_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_group_obs (
+CREATE TABLE IF NOT EXISTS tmp_group_obs (
   implementation_id int(11) NOT NULL DEFAULT '0',
   encounter_type int(11) DEFAULT NULL,
   obs_group_id int(11) DEFAULT NULL,
@@ -4056,7 +4056,7 @@ CREATE TABLE tmp_group_obs (
   answer text CHARACTER SET utf8
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE tmp_location (
+CREATE TABLE IF NOT EXISTS tmp_location (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   location_id int(11) NOT NULL,
@@ -4094,7 +4094,7 @@ CREATE TABLE tmp_location (
   KEY location_changed_by (changed_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_location_attribute (
+CREATE TABLE IF NOT EXISTS tmp_location_attribute (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   location_attribute_id int(11) NOT NULL,
@@ -4118,7 +4118,7 @@ CREATE TABLE tmp_location_attribute (
   KEY location_attribute_voided_by_fk (voided_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_location_attribute_type (
+CREATE TABLE IF NOT EXISTS tmp_location_attribute_type (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   location_attribute_type_id int(11) NOT NULL,
@@ -4146,7 +4146,7 @@ CREATE TABLE tmp_location_attribute_type (
   KEY location_attribute_type_retired_by_fk (retired_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_location_tag (
+CREATE TABLE IF NOT EXISTS tmp_location_tag (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   location_tag_id int(11) NOT NULL,
@@ -4167,7 +4167,7 @@ CREATE TABLE tmp_location_tag (
   KEY location_tag_changed_by (changed_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_location_tag_map (
+CREATE TABLE IF NOT EXISTS tmp_location_tag_map (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   location_id int(11) NOT NULL,
@@ -4175,7 +4175,7 @@ CREATE TABLE tmp_location_tag_map (
   KEY location_tag_map_tag (location_tag_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_obs (
+CREATE TABLE IF NOT EXISTS tmp_obs (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   obs_id int(11) NOT NULL,
@@ -4224,7 +4224,7 @@ CREATE TABLE tmp_obs (
   KEY previous_version (previous_version)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_obs_20180727_30 (
+CREATE TABLE IF NOT EXISTS tmp_obs_20180727_30 (
   surrogate_id int(11) NOT NULL DEFAULT '0',
   implementation_id int(11) NOT NULL,
   obs_id int(11) NOT NULL,
@@ -4259,7 +4259,7 @@ CREATE TABLE tmp_obs_20180727_30 (
   interpretation varchar(32) CHARACTER SET utf8 DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE tmp_orders (
+CREATE TABLE IF NOT EXISTS tmp_orders (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   order_id int(11) NOT NULL,
@@ -4304,7 +4304,7 @@ CREATE TABLE tmp_orders (
   KEY orders_order_group_id_fk (order_group_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_patient (
+CREATE TABLE IF NOT EXISTS tmp_patient (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   patient_id int(11) NOT NULL,
@@ -4321,7 +4321,7 @@ CREATE TABLE tmp_patient (
   KEY user_who_voided_patient (voided_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_patient_identifier (
+CREATE TABLE IF NOT EXISTS tmp_patient_identifier (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   patient_identifier_id int(11) NOT NULL,
@@ -4349,7 +4349,7 @@ CREATE TABLE tmp_patient_identifier (
   KEY patient_identifier_changed_by (changed_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_patient_identifier_type (
+CREATE TABLE IF NOT EXISTS tmp_patient_identifier_type (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   patient_identifier_type_id int(11) NOT NULL,
@@ -4375,7 +4375,7 @@ CREATE TABLE tmp_patient_identifier_type (
   KEY user_who_retired_patient_identifier_type (retired_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_patient_program (
+CREATE TABLE IF NOT EXISTS tmp_patient_program (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   patient_program_id int(11) NOT NULL,
@@ -4404,7 +4404,7 @@ CREATE TABLE tmp_patient_program (
   KEY patient_program_outcome_concept_id_fk (outcome_concept_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_person (
+CREATE TABLE IF NOT EXISTS tmp_person (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   person_id int(11) NOT NULL,
@@ -4435,7 +4435,7 @@ CREATE TABLE tmp_person (
   KEY user_who_voided_person (voided_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_person_address (
+CREATE TABLE IF NOT EXISTS tmp_person_address (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   person_address_id int(11) NOT NULL,
@@ -4472,7 +4472,7 @@ CREATE TABLE tmp_person_address (
   KEY person_address_changed_by (changed_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_person_attribute (
+CREATE TABLE IF NOT EXISTS tmp_person_attribute (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   person_attribute_id int(11) NOT NULL,
@@ -4496,7 +4496,7 @@ CREATE TABLE tmp_person_attribute (
   KEY attribute_voider (voided_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_person_attribute_type (
+CREATE TABLE IF NOT EXISTS tmp_person_attribute_type (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   person_attribute_type_id int(11) NOT NULL,
@@ -4526,7 +4526,7 @@ CREATE TABLE tmp_person_attribute_type (
   KEY privilege_which_can_edit (edit_privilege)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_person_name (
+CREATE TABLE IF NOT EXISTS tmp_person_name (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   person_name_id int(11) NOT NULL,
@@ -4559,7 +4559,7 @@ CREATE TABLE tmp_person_name (
   KEY user_who_voided_name (voided_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_privilege (
+CREATE TABLE IF NOT EXISTS tmp_privilege (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   privilege varchar(255) NOT NULL,
@@ -4568,7 +4568,7 @@ CREATE TABLE tmp_privilege (
   KEY privilege_uuid_index (uuid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_provider (
+CREATE TABLE IF NOT EXISTS tmp_provider (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   provider_id int(11) NOT NULL,
@@ -4591,7 +4591,7 @@ CREATE TABLE tmp_provider (
   KEY provider_creator_fk (creator)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_provider_attribute (
+CREATE TABLE IF NOT EXISTS tmp_provider_attribute (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   provider_attribute_id int(11) NOT NULL,
@@ -4615,7 +4615,7 @@ CREATE TABLE tmp_provider_attribute (
   KEY provider_attribute_voided_by_fk (voided_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_provider_attribute_type (
+CREATE TABLE IF NOT EXISTS tmp_provider_attribute_type (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   provider_attribute_type_id int(11) NOT NULL,
@@ -4642,7 +4642,7 @@ CREATE TABLE tmp_provider_attribute_type (
   KEY provider_attribute_type_retired_by_fk (retired_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_relationship (
+CREATE TABLE IF NOT EXISTS tmp_relationship (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   relationship_id int(11) NOT NULL,
@@ -4668,7 +4668,7 @@ CREATE TABLE tmp_relationship (
   KEY relationship_changed_by (changed_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_relationship_type (
+CREATE TABLE IF NOT EXISTS tmp_relationship_type (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   relationship_type_id int(11) NOT NULL,
@@ -4691,7 +4691,7 @@ CREATE TABLE tmp_relationship_type (
   KEY relationship_type_changed_by (changed_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_role (
+CREATE TABLE IF NOT EXISTS tmp_role (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   role varchar(50) NOT NULL DEFAULT '',
@@ -4700,7 +4700,7 @@ CREATE TABLE tmp_role (
   KEY role_uuid_index (uuid)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_role_privilege (
+CREATE TABLE IF NOT EXISTS tmp_role_privilege (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   role varchar(50) NOT NULL DEFAULT '',
@@ -4708,7 +4708,7 @@ CREATE TABLE tmp_role_privilege (
   KEY role_privilege_to_role (role)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_role_role (
+CREATE TABLE IF NOT EXISTS tmp_role_role (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   parent_role varchar(50) NOT NULL DEFAULT '',
@@ -4716,7 +4716,7 @@ CREATE TABLE tmp_role_role (
   KEY inherited_role (child_role)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_user_property (
+CREATE TABLE IF NOT EXISTS tmp_user_property (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   user_id int(11) NOT NULL DEFAULT '0',
@@ -4724,7 +4724,7 @@ CREATE TABLE tmp_user_property (
   property_value varchar(255) NOT NULL DEFAULT ''
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_user_role (
+CREATE TABLE IF NOT EXISTS tmp_user_role (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   user_id int(11) NOT NULL DEFAULT '0',
@@ -4732,7 +4732,7 @@ CREATE TABLE tmp_user_role (
   KEY user_role_to_users (user_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_users (
+CREATE TABLE IF NOT EXISTS tmp_users (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   user_id int(11) NOT NULL,
@@ -4758,7 +4758,7 @@ CREATE TABLE tmp_users (
   KEY person_id_for_user (person_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_visit_attribute (
+CREATE TABLE IF NOT EXISTS tmp_visit_attribute (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   visit_attribute_id int(11) NOT NULL,
@@ -4782,7 +4782,7 @@ CREATE TABLE tmp_visit_attribute (
   KEY visit_attribute_voided_by_fk (voided_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_visit_attribute_type (
+CREATE TABLE IF NOT EXISTS tmp_visit_attribute_type (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   visit_attribute_type_id int(11) NOT NULL,
@@ -4809,7 +4809,7 @@ CREATE TABLE tmp_visit_attribute_type (
   KEY visit_attribute_type_retired_by_fk (retired_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE tmp_visit_type (
+CREATE TABLE IF NOT EXISTS tmp_visit_type (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   visit_type_id int(11) NOT NULL DEFAULT '0',
@@ -4830,7 +4830,7 @@ CREATE TABLE tmp_visit_type (
   KEY visit_type_retired_by (retired_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE uform_fast_screening (
+CREATE TABLE IF NOT EXISTS uform_fast_screening (
   surrogate_id bigint(21) NOT NULL,
   implementation_id int(11) NOT NULL DEFAULT '0',
   user_form_id int(11) NOT NULL,
@@ -4855,7 +4855,7 @@ CREATE TABLE uform_fast_screening (
   PRIMARY KEY (surrogate_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE uform_gfatm_feedback (
+CREATE TABLE IF NOT EXISTS uform_gfatm_feedback (
   surrogate_id bigint(21) NOT NULL,
   implementation_id int(11) NOT NULL DEFAULT '0',
   user_form_id int(11) NOT NULL,
@@ -4870,7 +4870,7 @@ CREATE TABLE uform_gfatm_feedback (
   PRIMARY KEY (surrogate_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE uform_uvgi_baseline_meter_reading (
+CREATE TABLE IF NOT EXISTS uform_uvgi_baseline_meter_reading (
   surrogate_id bigint(21) NOT NULL,
   implementation_id int(11) NOT NULL DEFAULT '0',
   user_form_id int(11) NOT NULL,
@@ -4896,7 +4896,7 @@ CREATE TABLE uform_uvgi_baseline_meter_reading (
   PRIMARY KEY (surrogate_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE uform_uvgi_installation (
+CREATE TABLE IF NOT EXISTS uform_uvgi_installation (
   surrogate_id bigint(21) NOT NULL,
   implementation_id int(11) NOT NULL DEFAULT '0',
   user_form_id int(11) NOT NULL,
@@ -4929,7 +4929,7 @@ CREATE TABLE uform_uvgi_installation (
   PRIMARY KEY (surrogate_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE uform_uvgi_maintenance (
+CREATE TABLE IF NOT EXISTS uform_uvgi_maintenance (
   surrogate_id bigint(21) NOT NULL,
   implementation_id int(11) NOT NULL DEFAULT '0',
   user_form_id int(11) NOT NULL,
@@ -4991,7 +4991,7 @@ CREATE TABLE uform_uvgi_maintenance (
   PRIMARY KEY (surrogate_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE user_attribute (
+CREATE TABLE IF NOT EXISTS user_attribute (
   surrogate_id int(11) NOT NULL,
   implementation_id int(11) NOT NULL,
   user_attribute_id int(11) NOT NULL,
@@ -5017,7 +5017,7 @@ CREATE TABLE user_attribute (
   KEY fk_user_attribute_user_attribute_type_idx (user_attribute_type_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE user_attribute_type (
+CREATE TABLE IF NOT EXISTS user_attribute_type (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   user_attribute_type_id int(11) NOT NULL,
@@ -5044,7 +5044,7 @@ CREATE TABLE user_attribute_type (
   KEY fk_user_attribute_type_gfatm_location2_idx (changed_at)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE user_form (
+CREATE TABLE IF NOT EXISTS user_form (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   user_form_id int(11) NOT NULL,
@@ -5070,7 +5070,7 @@ CREATE TABLE user_form (
   KEY fk_user_form_gfatm_user_form_idx (user_form_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE user_form_result (
+CREATE TABLE IF NOT EXISTS user_form_result (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   user_form_result_id int(11) NOT NULL,
@@ -5095,7 +5095,7 @@ CREATE TABLE user_form_result (
   KEY fk_user_form_result_user_form_result_id (user_form_result_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE user_form_type (
+CREATE TABLE IF NOT EXISTS user_form_type (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   user_form_type_id int(11) NOT NULL,
@@ -5118,7 +5118,7 @@ CREATE TABLE user_form_type (
   KEY FKC9467A6187F9F544 (changed_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE user_gfatm_location (
+CREATE TABLE IF NOT EXISTS user_gfatm_location (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   user_id int(11) NOT NULL,
@@ -5139,7 +5139,7 @@ CREATE TABLE user_gfatm_location (
   KEY fk_user_gfatm_location_gfatm_location3_idx (changed_at)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE user_property (
+CREATE TABLE IF NOT EXISTS user_property (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   user_id int(11) NOT NULL DEFAULT '0',
@@ -5148,7 +5148,7 @@ CREATE TABLE user_property (
   PRIMARY KEY (surrogate_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE user_role (
+CREATE TABLE IF NOT EXISTS user_role (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   user_id int(11) NOT NULL DEFAULT '0',
@@ -5157,7 +5157,7 @@ CREATE TABLE user_role (
   KEY user_role_to_users (user_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE user_role_merged (
+CREATE TABLE IF NOT EXISTS user_role_merged (
   implementation_id int(11) NOT NULL,
   user_id int(11) NOT NULL DEFAULT '0',
   anonymous text CHARACTER SET utf8,
@@ -5219,7 +5219,7 @@ CREATE TABLE user_role_merged (
   PRIMARY KEY (implementation_id,user_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   user_id int(11) NOT NULL,
@@ -5249,7 +5249,7 @@ CREATE TABLE users (
   KEY username (username)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE visit (
+CREATE TABLE IF NOT EXISTS visit (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   visit_id int(11) NOT NULL,
@@ -5279,7 +5279,7 @@ CREATE TABLE visit (
   KEY visit_indication_concept_fk (indication_concept_id)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE visit_attribute (
+CREATE TABLE IF NOT EXISTS visit_attribute (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   visit_attribute_id int(11) NOT NULL,
@@ -5304,7 +5304,7 @@ CREATE TABLE visit_attribute (
   KEY visit_attribute_voided_by_fk (voided_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE visit_attribute_type (
+CREATE TABLE IF NOT EXISTS visit_attribute_type (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   visit_attribute_type_id int(11) NOT NULL,
@@ -5332,7 +5332,7 @@ CREATE TABLE visit_attribute_type (
   KEY visit_attribute_type_retired_by_fk (retired_by)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
-CREATE TABLE visit_type (
+CREATE TABLE IF NOT EXISTS visit_type (
   surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   visit_type_id int(11) NOT NULL DEFAULT '0',
@@ -5361,7 +5361,7 @@ DELIMITER $$
 CREATE PROCEDURE cumulative1(in site varchar(255), in date_from datetime, in date_to datetime)
 BEGIN
 	DROP TABLE IF EXISTS cumulative_xrayed1;
-	CREATE TABLE cumulative_xrayed1 AS 
+	CREATE TABLE IF NOT EXISTS cumulative_xrayed1 AS 
 	SELECT concat( DATE_FORMAT(cxr_order.date_entered,'%b'), '-', year(cxr_order.date_entered)) as month_year ,count(cxr_result.order_id) as x_rayed 
 	FROM enc_cxr_screening_test_order AS cxr_order 
 	LEFT JOIN dim_patient AS PT ON PT.patient_id = cxr_order.patient_id 
@@ -5586,7 +5586,7 @@ CREATE PROCEDURE `dim_concept_modeling`(in impl_id int, in date_from datetime, i
 BEGIN
 
 	DROP TABLE IF EXISTS concept_latest_name;
-	CREATE TABLE concept_latest_name SELECT c.implementation_id,
+	CREATE TABLE IF NOT EXISTS concept_latest_name SELECT c.implementation_id,
 	    c.concept_id,
 	    (SELECT 
 	            MAX(concept_name_id)
@@ -5675,7 +5675,7 @@ WHERE
 
 DROP TABLE IF EXISTS location_attribute_merged;
 
-CREATE TABLE location_attribute_merged SELECT a.implementation_id,
+CREATE TABLE IF NOT EXISTS location_attribute_merged SELECT a.implementation_id,
     a.location_id,
     GROUP_CONCAT(IF(a.attribute_type_id = 1,
             a.value_reference,
@@ -5753,7 +5753,7 @@ BEGIN
 
 	DROP TABLE IF EXISTS user_role_merged;
 
-	CREATE TABLE user_role_merged SELECT a.implementation_id,
+	CREATE TABLE IF NOT EXISTS user_role_merged SELECT a.implementation_id,
     a.user_id,
     GROUP_CONCAT(IF(a.role = 'Anonymous', 'Yes', NULL)) AS anonymous,
     GROUP_CONCAT(IF(a.role = 'Authenticated',
@@ -5920,7 +5920,7 @@ GROUP BY a.user_id;
 	WHERE u.implementation_id = impl_id;
 
 	-- Remove duplicate providers
-	CREATE TABLE IF NOT EXISTS clean_provider SELECT * FROM
+	CREATE TABLE IF NOT EXISTS IF NOT EXISTS clean_provider SELECT * FROM
     provider
 WHERE
     provider_id IN (SELECT 
@@ -5946,7 +5946,7 @@ BEGIN
 
 DROP TABLE IF EXISTS person_latest_name;
 
-CREATE TABLE person_latest_name SELECT * FROM
+CREATE TABLE IF NOT EXISTS person_latest_name SELECT * FROM
     person_name AS a
 WHERE
     a.person_name_id = (SELECT 
@@ -5962,7 +5962,7 @@ ALTER TABLE person_latest_name ADD PRIMARY KEY surrogate_id (surrogate_id), ADD 
 
 DROP TABLE IF EXISTS person_latest_address;
 
-CREATE TABLE person_latest_address SELECT * FROM
+CREATE TABLE IF NOT EXISTS person_latest_address SELECT * FROM
     person_address AS a
 WHERE
     a.person_address_id = (SELECT 
@@ -5979,7 +5979,7 @@ ALTER TABLE person_latest_address ADD PRIMARY KEY surrogate_id (surrogate_id), A
 
 DROP TABLE IF EXISTS patient_latest_identifier;
 
-CREATE TABLE patient_latest_identifier SELECT implementation_id,
+CREATE TABLE IF NOT EXISTS patient_latest_identifier SELECT implementation_id,
     patient_id,
     identifier_type,
     identifier,
@@ -5994,7 +5994,7 @@ ALTER TABLE patient_latest_identifier ADD INDEX identifier_id_index (patient_id,
 
 DROP TABLE IF EXISTS person_attribute_merged;
 
-CREATE TABLE person_attribute_merged SELECT a.implementation_id,
+CREATE TABLE IF NOT EXISTS person_attribute_merged SELECT a.implementation_id,
     a.person_id,
     GROUP_CONCAT(IF(a.person_attribute_type_id = 1,
             a.value,
@@ -6117,7 +6117,7 @@ AND ((p.date_created between date_from AND date_to) OR (p.date_changed between d
 
 DROP TABLE IF EXISTS tmp_dim_patient;
 
-CREATE TABLE tmp_dim_patient SELECT p.surrogate_id,
+CREATE TABLE IF NOT EXISTS tmp_dim_patient SELECT p.surrogate_id,
     p.implementation_id,
     p.patient_id,
     pid.identifier AS patient_identifier,
@@ -6305,7 +6305,7 @@ WHERE e.voided = 0 AND NOT EXISTS (SELECT * FROM dim_encounter WHERE implementat
 AND ((e.date_created BETWEEN date_from AND date_to) or (e.date_changed BETWEEN date_from AND date_to));
 
 -- Delete all past encounters FROM dimension, which are now voided
-CREATE TABLE temp_voided SELECT encounter_id FROM
+CREATE TABLE IF NOT EXISTS temp_voided SELECT encounter_id FROM
     encounter
 WHERE
     voided = 1
@@ -6322,7 +6322,7 @@ WHERE
 DROP TABLE temp_voided;
 
 DROP TABLE IF EXISTS tmp_dim_encounter;
-CREATE TABLE tmp_dim_encounter SELECT e.surrogate_id,
+CREATE TABLE IF NOT EXISTS tmp_dim_encounter SELECT e.surrogate_id,
     e.implementation_id,
     e.encounter_id,
     e.encounter_type,
@@ -6406,7 +6406,7 @@ WHERE
     WHERE
         voided = 1);
 
-CREATE TABLE tmp_group_obs SELECT implementation_id,
+CREATE TABLE IF NOT EXISTS tmp_group_obs SELECT implementation_id,
     encounter_type,
     obs_group_id,
     question,
@@ -6776,7 +6776,7 @@ CREATE PROCEDURE fact_modeling()
 BEGIN
 
 DROP TABLE IF EXISTS fact_patient_encounter;
-CREATE TABLE fact_patient_encounter 
+CREATE TABLE IF NOT EXISTS fact_patient_encounter 
 SELECT de.implementation_id, de.patient_id, de.encounter_type, de.encounter_name, min(de.encounter_id) as first_encounter_id, max(de.encounter_id) as last_encounter_id, min(de.date_entered) as first_encounter_date, max(de.date_entered) as last_encounter_date FROM dim_encounter AS de
 GROUP BY de.implementation_id, de.patient_id, de.encounter_type;
 ALTER TABLE fact_patient_encounter ADD PRIMARY KEY (implementation_id, patient_id, encounter_type),
@@ -6786,7 +6786,7 @@ ADD INDEX last_enc_idx (last_encounter_id ASC);
 -- common informationn from pet index registration, fast treatment initiation and childhood tb treatment initiation
 
 drop table if exists common_form_4_29_67;
-CREATE TABLE common_form_4_29_67
+CREATE TABLE IF NOT EXISTS common_form_4_29_67
  SELECT e.implementation_id AS implementation_id, e.encounter_id AS encounter_id, e.provider AS provider, e.location_id AS location_id,	l.location_name AS location_name, e.patient_id AS patient_id, date(e.date_entered) AS date_entered, GROUP_CONCAT(IF((o.question = 'tb_infection_type'), o.answer, NULL) SEPARATOR ',') AS tb_infection_type, GROUP_CONCAT(IF((o.question = 'tb_type'), o.answer, NULL) SEPARATOR ',') AS tb_type, GROUP_CONCAT(IF((o.question = 'dst_pattern'), o.answer, NULL) SEPARATOR ',') AS dst_pattern, GROUP_CONCAT(IF((o.question = 'treatment_enrollment_date'), o.answer,  NULL) SEPARATOR ',') AS treatment_enrollment_date, GROUP_CONCAT(IF((o.question = 'district'), o.answer, NULL) SEPARATOR ',') AS district, GROUP_CONCAT(IF((o.question = 'address_type'), o.answer, NULL) SEPARATOR ',') AS address_type,  GROUP_CONCAT(IF((o.question = 'diagnosis_type'), o.answer, NULL) SEPARATOR ',') AS diagnosis_type, GROUP_CONCAT(IF((o.question = 'primary_contact'), o.answer, NULL) SEPARATOR ',') AS primary_contact, GROUP_CONCAT(IF((o.question = 'secondary_contact'), o.answer,  NULL) SEPARATOR ',') AS secondary_contact, GROUP_CONCAT(IF((o.question = 'address1'),  o.answer,  NULL) SEPARATOR ',') AS address1, GROUP_CONCAT(IF((o.question = 'city_village'),  o.answer,  NULL) SEPARATOR ',') AS city_village, GROUP_CONCAT(IF((o.question = 'registration_date'),   o.answer, NULL)  SEPARATOR ',') AS registration_date, GROUP_CONCAT(IF((o.question = 'tb_registration_no'),   o.answer, NULL)  SEPARATOR ',') AS tb_registration_no FROM ((dim_encounter e JOIN dim_obs o ON (((o.encounter_id = e.encounter_id) AND (o.voided = 0)))) JOIN dim_location l ON ((l.location_id = e.location_id))) WHERE ((e.encounter_type IN (4 , 29, 210)) AND ISNULL(o.obs_group_id)) and e.encounter_id=(select max(encounter_id) from dim_encounter where encounter_type IN (4 , 29, 210) and patient_id=e.patient_id) GROUP BY  e.implementation_id , e.encounter_id , e.patient_id , e.provider , e.location_id , e.date_entered;
 alter table common_form_4_29_67 add PRIMARY KEY (encounter_id), add KEY encounter_id (encounter_id), add  KEY patient_id (patient_id), add  KEY location_id (location_id), add  KEY date_entered (date_entered);
 
@@ -7283,7 +7283,7 @@ DELIMITER $$
 CREATE PROCEDURE treatment_tb_script()
 BEGIN
 DROP TABLE IF EXISTS fact_chtb_treatment_tb;
-create table gfatm_dw.fact_chtb_treatment_tb (implementation_id int(11) NOT NULL,datetime_id bigint(21) NOT NULL, 
+CREATE TABLE IF NOT EXISTS gfatm_dw.fact_chtb_treatment_tb (implementation_id int(11) NOT NULL,datetime_id bigint(21) NOT NULL, 
  location_id int(11) NOT NULL ,  tb_diagnosed decimal(10,2), tb_treatment_initiated decimal(10,2), percentage_tb_treatment_initiated decimal(10,2),
 missed_tb_follow_up decimal(10,2), percentage_missed_tb_follow_up decimal(10,2), on_tb_treatment decimal(10,2), percentage_on_tb_treatment decimal(10,2),
 cured decimal(10,2), percentage_cured decimal(10,2), treatment_completed decimal(10,2), percentage_treatment_completed decimal(10,2), died decimal(10,2),
