@@ -241,7 +241,7 @@ public class DataWarehouseMain {
 		try {
 			log.info("Creating dimensions and facts.");
 			dwDb.runStoredProcedure("create_datawarehouse", null);
-			log.info("Dimensions and facts created.");
+			log.info("Tables, Temporary Tables and Dimensions created.");
 		} catch (InstantiationException | IllegalAccessException | ClassNotFoundException | SQLException e) {
 			log.warning(e.getMessage());
 		}
