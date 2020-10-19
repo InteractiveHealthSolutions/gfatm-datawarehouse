@@ -11,14 +11,23 @@ Interactive Health Solutions, hereby disclaims all copyright interest in this pr
  */
 package com.ihsinformatics.gfatmimport;
 
+import java.beans.PropertyVetoException;
+import java.io.IOException;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
+import com.ihsinformatics.gfatmimport.util.PooledDataSource;
 import com.ihsinformatics.util.CommandType;
 import com.ihsinformatics.util.DatabaseUtil;
 import com.ihsinformatics.util.DateTimeUtil;
@@ -64,7 +73,13 @@ public class DimensionController {
 			params.put("impl_id", implementationId);
 			params.put("date_from", from);
 			params.put("date_to", to);
-			db.runStoredProcedure("dim_modeling", params);
+			db.runStoredProcedure("dim_concept_modeling", params);
+			db.runStoredProcedure("dim_location_modeling", params);
+			db.runStoredProcedure("dim_user_modeling", params);
+			db.runStoredProcedure("dim_patient_modeling", params);
+			db.runStoredProcedure("dim_user_form_modeling", params);
+			db.runStoredProcedure("dim_encounter_modeling", params);
+			db.runStoredProcedure("dim_obs_modeling", params);
 		} catch (Exception e) {
 			log.warning(e.getMessage());
 		}
@@ -141,6 +156,10 @@ public class DimensionController {
 			log.severe("User Form types could not be fetched");
 			return;
 		}
+		List<String> dropQueries = new ArrayList<>();
+		List<String> createQueries = new ArrayList<>();
+		List<String> alterQueries = new ArrayList<>();
+
 		for (Object[] userFormType : userFormTypes) {
 			StringBuilder query = new StringBuilder();
 			// Create a de-encounterized table
@@ -153,11 +172,27 @@ public class DimensionController {
 				elements.add(data[i][0].toString());
 			}
 			StringBuilder groupConcat = new StringBuilder();
+			Set<String> taken = new HashSet<>();
+			for (String s : new String[] { "surrogate_id", "implementation_id", "user_form_id", "user_id", "username",
+					"location_id", "location_name", "date_entered" }) {
+				taken.add(s);
+			}
 			for (Object element : elements) {
+				// Cleanup undesired characters
 				String str = element.toString().replaceAll("[^A-Za-z0-9]", "_").toLowerCase();
+				// Reduce the length of column if the name is too long
+				if (str.length() > 36) {
+					str = str.substring(0, 36) + "_";
+				}
+				// Append an underscore if the column name is duplicated
+				if (taken.contains(str)) {
+					str = str + "_";
+				}
 				groupConcat.append(
 						"group_concat(if(ufr.element_name = '" + element + "', ufr.result, NULL)) AS " + str + ", ");
+				taken.add(str);
 			}
+
 			String userFormName = userFormType[1].toString().toLowerCase().replace(" ", "_").replace("-", "_");
 			query.append("create table uform_" + userFormName + " ");
 			query.append(
@@ -172,22 +207,13 @@ public class DimensionController {
 			query.append("where uf.user_form_type_id = '" + userFormType[0].toString() + "' ");
 			query.append(
 					"group by uf.surrogate_id, uf.implementation_id, uf.user_form_id, uf.user_id, u.username, uf.location_id, l.location_name, uf.date_entered");
-			// Drop previous table
-			db.runCommand(CommandType.DROP, "drop table if exists uform_" + userFormName);
-			log.info("Generating table for " + userFormType[1].toString());
-			try {
-				// Insert new data
-				Object result = db.runCommand(CommandType.CREATE, query.toString());
-				if (result == null) {
-					log.warning("No data imported for User Form " + userFormType[1].toString());
-				}
-				// Creating Primary key
-				db.runCommand(CommandType.ALTER,
-						"alter table uform_" + userFormName + " add primary key surrogate_id (surrogate_id)");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			dropQueries.add("drop table if exists uform_" + userFormName);
+			createQueries.add(query.toString());
+			alterQueries.add("alter table uform_" + userFormName + " add primary key surrogate_id (surrogate_id)");
 		}
+		executeQueryPool(dropQueries.toArray(new String[] {}));
+		executeQueryPool(createQueries.toArray(new String[] {}));
+		executeQueryPool(alterQueries.toArray(new String[] {}));
 	}
 
 	/**
@@ -205,6 +231,10 @@ public class DimensionController {
 			log.severe("Encounter types could not be fetched");
 			return;
 		}
+		List<String> dropQueries = new ArrayList<>();
+		List<String> createQueries = new ArrayList<>();
+		List<String> alterQueries = new ArrayList<>();
+
 		for (Object[] encounterType : encounterTypes) {
 			StringBuilder query = new StringBuilder();
 			// Create a de-encounterized table
@@ -220,11 +250,27 @@ public class DimensionController {
 				continue;
 			}
 			StringBuilder groupConcat = new StringBuilder();
-			for (Object element : elements) {
-				String str = element.toString().replaceAll("[^A-Za-z0-9]", "_").toLowerCase();
-				groupConcat.append("group_concat(if(o.question = '" + element + "', o.answer, NULL)) AS " + str + ", ");
+			Set<String> taken = new HashSet<>();
+			for (String s : new String[] { "surrogate_id", "implementation_id", "encounter_id", "provider",
+					"location_id", "location_name", "patient_id", "date_entered" }) {
+				taken.add(s);
 			}
-			String encounterName = encounterType[1].toString().toLowerCase().replace(" ", "_").replace("-", "_");
+			for (Object element : elements) {
+				// Cleanup undesired characters
+				String str = element.toString().replaceAll("[^A-Za-z0-9]", "_").toLowerCase();
+				// Reduce the length of column if the name is too long
+				if (str.length() > 32) {
+					str = str.substring(0, 32) + "_xxx";
+				}
+				// Append an underscore if the column name is duplicated
+				if (taken.contains(str)) {
+					str = str + "_";
+				}
+				groupConcat.append("group_concat(if(o.question = '" + element + "', o.answer, NULL)) AS " + str + ", ");
+				taken.add(str);
+			}
+			String encounterName = encounterType[1].toString().toLowerCase().replace(" ", "_").replace("-", "_")
+					.replace("/", "_");
 			query.append("create table enc_" + encounterName + " engine=InnoDB ");
 			query.append(
 					"select e.surrogate_id, e.implementation_id, e.encounter_id,  e.provider, e.location_id, l.location_name, e.patient_id, e.date_entered, ");
@@ -237,23 +283,14 @@ public class DimensionController {
 			query.append("and o.obs_group_id is null ");
 			query.append(
 					"group by e.surrogate_id, e.implementation_id, e.encounter_id, e.patient_id, e.provider, e.location_id, e.date_entered");
-			// Drop previous table
-			db.runCommand(CommandType.DROP, "drop table if exists enc_" + encounterName);
-			log.info("Generating table for " + encounterType[1].toString());
-			try {
-				log.info("Executing: " + query.toString());
-				// Insert new data
-				Object result = db.runCommand(CommandType.CREATE, query.toString());
-				if (result == null) {
-					log.warning("No data imported for Encounter " + encounterType[1].toString());
-				}
-				// Creating Primary key
-				db.runCommand(CommandType.ALTER, "alter table enc_" + encounterName
-						+ " add primary key surrogate_id (surrogate_id), add key patient_id (patient_id), add key encounter_id (encounter_id)");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			dropQueries.add("drop table if exists enc_" + encounterName);
+			createQueries.add(query.toString());
+			alterQueries.add("alter table enc_" + encounterName
+					+ " add primary key surrogate_id (surrogate_id), add key patient_id (patient_id), add key encounter_id (encounter_id)");
 		}
+		executeQueryPool(dropQueries.toArray(new String[] {}));
+		executeQueryPool(createQueries.toArray(new String[] {}));
+		executeQueryPool(alterQueries.toArray(new String[] {}));
 	}
 
 	/**
@@ -270,6 +307,10 @@ public class DimensionController {
 			log.severe("Lab test types could not be fetched");
 			return;
 		}
+		List<String> dropQueries = new ArrayList<>();
+		List<String> createQueries = new ArrayList<>();
+		List<String> alterQueries = new ArrayList<>();
+
 		for (Object[] testType : testTypes) {
 			StringBuilder query = new StringBuilder();
 			// Create a de-encounterized table
@@ -286,10 +327,25 @@ public class DimensionController {
 				continue;
 			}
 			StringBuilder groupConcat = new StringBuilder();
+			Set<String> taken = new HashSet<>();
+			for (String s : new String[] { "surrogate_id", "implementation_id", "test_order_id", "orderer",
+					"patient_id", "encounter_id", "lab_reference_number", "order_date" }) {
+				taken.add(s);
+			}
 			for (Object element : elements) {
+				// Cleanup undesired characters
 				String str = element.toString().replaceAll("[^A-Za-z0-9]", "_").toLowerCase();
+				// Reduce the length of column if the name is too long
+				if (str.length() > 36) {
+					str = str.substring(0, 36) + "_";
+				}
+				// Append an underscore if the column name is duplicated
+				if (taken.contains(str)) {
+					str = str + "_";
+				}
 				groupConcat.append("group_concat(if(r.attribute_type_name = '" + element
 						+ "', r.value_reference, NULL)) AS " + str + ", ");
+				taken.add(str);
 			}
 			String labTestType = testType[1].toString().toLowerCase().replace(" ", "_").replace("-", "_");
 			query.append("create table lab_" + labTestType + " engine=InnoDB ");
@@ -301,23 +357,14 @@ public class DimensionController {
 			query.append("where t.test_type_id = '" + testType[0].toString() + "' ");
 			query.append(
 					"group by t.surrogate_id, t.implementation_id, t.test_order_id, t.orderer, t.patient_id, t.encounter_id, t.lab_reference_number, t.order_date");
-			// Drop previous table
-			db.runCommand(CommandType.DROP, "drop table if exists lab_" + labTestType);
-			log.info("Generating table for " + testType[1].toString());
-			try {
-				log.info("Executing: " + query.toString());
-				// Insert new data
-				Object result = db.runCommand(CommandType.CREATE, query.toString());
-				if (result == null) {
-					log.warning("No data imported for Lab Test " + testType[1].toString());
-				}
-				// Creating Primary key
-				db.runCommand(CommandType.ALTER, "alter table lab_" + labTestType
-						+ " add primary key surrogate_id (surrogate_id), add key patient_id (patient_id), add key test_order_id (test_order_id)");
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			dropQueries.add("drop table if exists lab_" + labTestType);
+			createQueries.add(query.toString());
+			alterQueries.add("alter table lab_" + labTestType
+					+ " add primary key surrogate_id (surrogate_id), add key patient_id (patient_id), add key test_order_id (test_order_id)");
 		}
+		executeQueryPool(dropQueries.toArray(new String[] {}));
+		executeQueryPool(createQueries.toArray(new String[] {}));
+		executeQueryPool(alterQueries.toArray(new String[] {}));
 	}
 
 	/**
@@ -332,5 +379,37 @@ public class DimensionController {
 		for (int i = 0; i < arr.length; i++)
 			maxNumber -= arr[i] = (maxNumber + nParts - i - 1) / (nParts - i);
 		return arr;
+	}
+
+	/**
+	 * Execute a batch of queries in parallel using {@link PooledDataSource}
+	 * 
+	 * @param queryPool
+	 */
+	public void executeQueryPool(String[] queryPool) {
+		// Create a pool of threads equal to the number of queries
+		ExecutorService executor = Executors.newFixedThreadPool(queryPool.length);
+		for (String q : queryPool) {
+			Runnable worker = new Thread(() -> {
+				try {
+					log.info("Executing: " + q.toString());
+					PooledDataSource.getInstance(db).runDMLCommand(q);
+				} catch (IOException | SQLException | PropertyVetoException e) {
+					log.warning("Exception caught while executing: " + q + "\n" + e.getMessage());
+				}
+			});
+			executor.execute(worker);
+			try {
+				// Wait for 100ms, which ought to be enough for most of the
+				// queries
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+			}
+		}
+		executor.shutdown();
+		while (!executor.isTerminated()) {
+			// Wait...
+		}
+		return;
 	}
 }
