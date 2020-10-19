@@ -12,7 +12,6 @@ Interactive Health Solutions, hereby disclaims all copyright interest in this pr
 package com.ihsinformatics.gfatmimport;
 
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.logging.Logger;
@@ -55,10 +54,9 @@ public class OpenMrsImportController extends AbstractImportController {
 	 * @throws ClassNotFoundException
 	 * @throws IllegalAccessException
 	 * @throws InstantiationException
-	 * @throws ParseException
 	 */
 	public void importData(int implementationId) throws InstantiationException, IllegalAccessException,
-			ClassNotFoundException, SQLException, ParseException {
+			ClassNotFoundException, SQLException {
 		sourceDb.getConnection();
 		// Import data from this connection into data warehouse
 		try {
@@ -444,7 +442,6 @@ public class OpenMrsImportController extends AbstractImportController {
 	 * Load data from location-related tables into data warehouse
 	 * 
 	 * @param implementationId
-	 * @param database
 	 * @throws ClassNotFoundException
 	 * @throws IllegalAccessException
 	 * @throws InstantiationException
@@ -549,7 +546,6 @@ public class OpenMrsImportController extends AbstractImportController {
 	 * Load data from concept-related tables into data warehouse
 	 * 
 	 * @param implementationId
-	 * @param database
 	 * @throws ClassNotFoundException
 	 * @throws IllegalAccessException
 	 * @throws InstantiationException
@@ -729,7 +725,6 @@ public class OpenMrsImportController extends AbstractImportController {
 	 * Load data from patient-related tables into data warehouse
 	 * 
 	 * @param implementationId
-	 * @param database
 	 * @throws ClassNotFoundException
 	 * @throws IllegalAccessException
 	 * @throws InstantiationException
@@ -819,7 +814,6 @@ public class OpenMrsImportController extends AbstractImportController {
 	 * Load data from encounter-related tables into data warehouse
 	 * 
 	 * @param implementationId
-	 * @param database
 	 * @throws ClassNotFoundException
 	 * @throws IllegalAccessException
 	 * @throws InstantiationException
@@ -939,7 +933,7 @@ public class OpenMrsImportController extends AbstractImportController {
 				dates.add(date[0].toString());
 			}
 			for (String date : dates) {
-				log.info("Inserting data from " + database + "." + tableName + " into data warehouse for date " + date);
+				log.info("Inserting new data from " + database + "." + tableName + " into data warehouse for date " + date);
 				insertQuery = "INSERT INTO tmp_" + tableName
 						+ " (surrogate_id, implementation_id, obs_id, person_id, concept_id, encounter_id, order_id, obs_datetime, location_id, obs_group_id, accession_number, value_group_id, value_coded, value_coded_name_id, value_drug, value_datetime, value_numeric, value_modifier, value_text, value_complex, comments, creator, date_created, voided, voided_by, date_voided, void_reason, uuid, previous_version) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 				selectQuery = "SELECT 0,'" + implementationId
@@ -952,7 +946,7 @@ public class OpenMrsImportController extends AbstractImportController {
 				dates.add(date[0].toString());
 			}
 			for (String date : dates) {
-				log.info("Inserting data from " + database + "." + tableName + " into data warehouse for date " + date);
+				log.info("Inserting voided data from " + database + "." + tableName + " into data warehouse for date " + date);
 				insertQuery = "INSERT INTO tmp_" + tableName
 						+ " (surrogate_id, implementation_id, obs_id, person_id, concept_id, encounter_id, order_id, obs_datetime, location_id, obs_group_id, accession_number, value_group_id, value_coded, value_coded_name_id, value_drug, value_datetime, value_numeric, value_modifier, value_text, value_complex, comments, creator, date_created, voided, voided_by, date_voided, void_reason, uuid, previous_version) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 				selectQuery = "SELECT 0,'" + implementationId
@@ -982,7 +976,6 @@ public class OpenMrsImportController extends AbstractImportController {
 	 * Load data from visit-related tables into data warehouse
 	 * 
 	 * @param implementationId
-	 * @param database
 	 * @throws ClassNotFoundException
 	 * @throws IllegalAccessException
 	 * @throws InstantiationException
@@ -1054,7 +1047,6 @@ public class OpenMrsImportController extends AbstractImportController {
 	 * Load data from form-related tables into data warehouse
 	 * 
 	 * @param implementationId
-	 * @param database
 	 * @throws ClassNotFoundException
 	 * @throws IllegalAccessException
 	 * @throws InstantiationException
@@ -1145,7 +1137,6 @@ public class OpenMrsImportController extends AbstractImportController {
 	 * Load data from orders-related tables into data warehouse
 	 * 
 	 * @param implementationId
-	 * @param database
 	 * @throws ClassNotFoundException
 	 * @throws IllegalAccessException
 	 * @throws InstantiationException
@@ -1182,7 +1173,6 @@ public class OpenMrsImportController extends AbstractImportController {
 	 * Load data from drug-related tables into data warehouse
 	 * 
 	 * @param implementationId
-	 * @param database
 	 * @throws ClassNotFoundException
 	 * @throws IllegalAccessException
 	 * @throws InstantiationException
