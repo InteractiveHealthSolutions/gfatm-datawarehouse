@@ -7,6 +7,7 @@
 	<description>Data Warehousing process for GFATM databases</description>
 
 	<properties>
+		<project.scm.id>ihs-gitlab</project.scm.id>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>
