@@ -5582,7 +5582,7 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE `dim_concept_modeling`(in impl_id int, in date_from datetime, in date_to datetime)
+CREATE PROCEDURE `dim_concept`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
 BEGIN
 
 	DROP TABLE IF EXISTS concept_latest_name;
@@ -5657,7 +5657,7 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE `dim_location_modeling`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
+CREATE PROCEDURE `dim_location`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
 BEGIN
 
 DELETE FROM dim_location WHERE implementation_id = impl_id;
@@ -5748,7 +5748,7 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE `dim_user_modeling`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
+CREATE PROCEDURE `dim_user`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
 BEGIN
 
 	DROP TABLE IF EXISTS user_role_merged;
@@ -5941,7 +5941,7 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE `dim_patient_modeling`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
+CREATE PROCEDURE `dim_patient`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
 BEGIN
 
 DROP TABLE IF EXISTS person_latest_name;
@@ -6271,7 +6271,7 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE `dim_user_form_modeling`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
+CREATE PROCEDURE `dim_user_form`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
 BEGIN
 
 INSERT INTO dim_user_form 
@@ -6293,7 +6293,7 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE `dim_encounter_modeling`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
+CREATE PROCEDURE `dim_encounter`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
 BEGIN
 
 INSERT IGNORE INTO dim_encounter 
@@ -6372,7 +6372,7 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE `dim_obs_modeling`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
+CREATE PROCEDURE `dim_obs`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
 BEGIN
 
 INSERT IGNORE INTO dim_obs 
