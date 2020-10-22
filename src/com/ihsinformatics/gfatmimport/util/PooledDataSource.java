@@ -68,7 +68,7 @@ public class PooledDataSource {
 		cpds.setInitialPoolSize(0);
 		cpds.setAcquireIncrement(2);
 		cpds.setMaxPoolSize(128);
-		cpds.setMaxStatementsPerConnection(2);
+		cpds.setMaxStatementsPerConnection(3);
 		cpds.setAutoCommitOnClose(true);
 		cpds.setAcquireRetryDelay(10000);
 		cpds.setMaxIdleTime(30);

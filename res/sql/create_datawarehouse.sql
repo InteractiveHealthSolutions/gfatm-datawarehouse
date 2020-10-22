@@ -5357,399 +5357,6 @@ CREATE TABLE IF NOT EXISTS visit_type (
 -- ------------------------
 -- CREATE STORED PROCEDURES
 -- ------------------------
-DELIMITER $$
-CREATE PROCEDURE cumulative1(in site varchar(255), in date_from datetime, in date_to datetime)
-BEGIN
-	DROP TABLE IF EXISTS cumulative_xrayed1;
-	CREATE TABLE IF NOT EXISTS cumulative_xrayed1 AS 
-	SELECT concat( DATE_FORMAT(cxr_order.date_entered,'%b'), '-', year(cxr_order.date_entered)) as month_year ,count(cxr_result.order_id) as x_rayed 
-	FROM enc_cxr_screening_test_order AS cxr_order 
-	LEFT JOIN dim_patient AS PT ON PT.patient_id = cxr_order.patient_id 
-	LEFT JOIN enc_cxr_screening_test_result AS cxr_result ON cxr_result.patient_id = cxr_order.patient_id and cxr_result.order_id = cxr_order.order_id 
-	WHERE cxr_order.reason_for_xray = 'screening' and YEAR(PT.date_created) - YEAR(PT.birthdate) >= 15 
-	AND cxr_order.encounter_id = 
-		(SELECT min(encounter_id) FROM enc_cxr_screening_test_order 
-		WHERE patient_id = cxr_order.PATIENT_ID) AND cxr_result.order_id IS NOT null AND cxr_order.date_entered BETWEEN date_from AND date_to AND cxr_order.location_name IN (site) 
-		GROUP BY year(cxr_order.date_entered), month(cxr_order.date_entered) 
-		ORDER BY year(cxr_order.date_entered),month(cxr_order.date_entered);
-
-END$$
-DELIMITER ;
-
-DELIMITER $$
-CREATE PROCEDURE delete_data(date_from DATETIME, date_to DATETIME)
-BEGIN
-
-	DELETE FROM concept WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM concept_answer WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM concept_description WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM concept_name WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM dim_concept WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM dim_encounter WHERE date_end BETWEEN date_from AND date_to;
-	DELETE FROM dim_location WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM dim_obs WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM dim_patient WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM dim_user WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM dim_user_form WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM dim_user_form_result WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM encounter WHERE date_end BETWEEN date_from AND date_to;
-	DELETE FROM encounter_provider WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM encounter_role WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM gfatm_element WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM gfatm_location WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM gfatm_location_attribute WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM gfatm_user_attribute WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM gfatm_user_form WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM gfatm_user_form_result WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM gfatm_user_location WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM gfatm_user_role WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM gfatm_users WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM location WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM location_attribute WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM location_tag WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM location_tag_map WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM obs WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM patient WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM patient_identifier WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM patient_program WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM patient_state WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM person WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM person_address WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM person_attribute WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM person_name WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM provider WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM provider_attribute WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM role WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM role_privilege WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM role_role WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM user_attribute WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM user_form WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM user_form_result WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM user_gfatm_location WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM user_role WHERE date_created BETWEEN date_from AND date_to;
-	DELETE FROM users WHERE date_created BETWEEN date_from AND date_to;
-
-END$$
-DELIMITER ;
-
-DELIMITER $$
-CREATE PROCEDURE destroy_datawarehouse()
-BEGIN
-	DROP TABLE IF EXISTS concept;
-	DROP TABLE IF EXISTS concept_answer;
-	DROP TABLE IF EXISTS concept_class;
-	DROP TABLE IF EXISTS concept_datatype;
-	DROP TABLE IF EXISTS concept_description;
-	DROP TABLE IF EXISTS concept_map_type;
-	DROP TABLE IF EXISTS concept_name;
-	DROP TABLE IF EXISTS concept_numeric;
-	DROP TABLE IF EXISTS concept_reference_map;
-	DROP TABLE IF EXISTS concept_reference_source;
-	DROP TABLE IF EXISTS concept_reference_term;
-	DROP TABLE IF EXISTS concept_reference_term_map;
-	DROP TABLE IF EXISTS concept_set;
-	DROP TABLE IF EXISTS concept_stop_word;
-	DROP TABLE IF EXISTS dim_concept;
-	DROP TABLE IF EXISTS dim_datetime;
-	DROP TABLE IF EXISTS dim_encounter;
-	DROP TABLE IF EXISTS dim_location;
-	DROP TABLE IF EXISTS dim_obs;
-	DROP TABLE IF EXISTS dim_patient;
-	DROP TABLE IF EXISTS dim_user;
-	DROP TABLE IF EXISTS dim_user_form;
-	DROP TABLE IF EXISTS dim_user_form_result;
-	DROP TABLE IF EXISTS encounter;
-	DROP TABLE IF EXISTS encounter_provider;
-	DROP TABLE IF EXISTS encounter_role;
-	DROP TABLE IF EXISTS encounter_type;
-	DROP TABLE IF EXISTS fact_concept;
-	DROP TABLE IF EXISTS fact_location;
-	DROP TABLE IF EXISTS fact_user;
-	DROP TABLE IF EXISTS field;
-	DROP TABLE IF EXISTS field_answer;
-	DROP TABLE IF EXISTS field_type;
-	DROP TABLE IF EXISTS form;
-	DROP TABLE IF EXISTS form_field;
-	DROP TABLE IF EXISTS gfatm_element;
-	DROP TABLE IF EXISTS gfatm_location;
-	DROP TABLE IF EXISTS gfatm_location_attribute;
-	DROP TABLE IF EXISTS gfatm_location_attribute_type;
-	DROP TABLE IF EXISTS gfatm_user_attribute;
-	DROP TABLE IF EXISTS gfatm_user_attribute_type;
-	DROP TABLE IF EXISTS gfatm_user_form;
-	DROP TABLE IF EXISTS gfatm_user_form_result;
-	DROP TABLE IF EXISTS gfatm_user_form_type;
-	DROP TABLE IF EXISTS gfatm_user_location;
-	DROP TABLE IF EXISTS gfatm_user_role;
-	DROP TABLE IF EXISTS gfatm_users;
-	DROP TABLE IF EXISTS gfatm_tmp_element;
-	DROP TABLE IF EXISTS gfatm_tmp_location;
-	DROP TABLE IF EXISTS gfatm_tmp_location_attribute;
-	DROP TABLE IF EXISTS gfatm_tmp_location_attribute_type;
-	DROP TABLE IF EXISTS gfatm_tmp_user_attribute;
-	DROP TABLE IF EXISTS gfatm_tmp_user_attribute_type;
-	DROP TABLE IF EXISTS gfatm_tmp_user_form;
-	DROP TABLE IF EXISTS gfatm_tmp_user_form_result;
-	DROP TABLE IF EXISTS gfatm_tmp_user_form_type;
-	DROP TABLE IF EXISTS gfatm_tmp_user_location;
-	DROP TABLE IF EXISTS gfatm_tmp_user_role;
-	DROP TABLE IF EXISTS gfatm_tmp_users;
-	DROP TABLE IF EXISTS location;
-	DROP TABLE IF EXISTS location_attribute;
-	DROP TABLE IF EXISTS location_attribute_merged;
-	DROP TABLE IF EXISTS location_attribute_type;
-	DROP TABLE IF EXISTS location_tag;
-	DROP TABLE IF EXISTS location_tag_map;
-	DROP TABLE IF EXISTS obs;
-	DROP TABLE IF EXISTS patient;
-	DROP TABLE IF EXISTS patient_identifier;
-	DROP TABLE IF EXISTS patient_latest_identifier;
-	DROP TABLE IF EXISTS patient_identifier_type;
-	DROP TABLE IF EXISTS patient_program;
-	DROP TABLE IF EXISTS patient_state;
-	DROP TABLE IF EXISTS person;
-	DROP TABLE IF EXISTS person_address;
-	DROP TABLE IF EXISTS person_attribute;
-	DROP TABLE IF EXISTS person_attribute_merged;
-	DROP TABLE IF EXISTS person_attribute_type;
-	DROP TABLE IF EXISTS person_latest_address;
-	DROP TABLE IF EXISTS person_latest_name;
-	DROP TABLE IF EXISTS person_name;
-	DROP TABLE IF EXISTS privilege;
-	DROP TABLE IF EXISTS provider;
-	DROP TABLE IF EXISTS provider_attribute;
-	DROP TABLE IF EXISTS provider_attribute_type;
-	DROP TABLE IF EXISTS role;
-	DROP TABLE IF EXISTS role_privilege;
-	DROP TABLE IF EXISTS role_role;
-	DROP TABLE IF EXISTS tmp;
-	DROP TABLE IF EXISTS tmp_concept;
-	DROP TABLE IF EXISTS tmp_concept_answer;
-	DROP TABLE IF EXISTS tmp_concept_class;
-	DROP TABLE IF EXISTS tmp_concept_datatype;
-	DROP TABLE IF EXISTS tmp_concept_description;
-	DROP TABLE IF EXISTS tmp_concept_map_type;
-	DROP TABLE IF EXISTS tmp_concept_name;
-	DROP TABLE IF EXISTS tmp_concept_numeric;
-	DROP TABLE IF EXISTS tmp_concept_set;
-	DROP TABLE IF EXISTS tmp_encounter;
-	DROP TABLE IF EXISTS tmp_encounter_provider;
-	DROP TABLE IF EXISTS tmp_encounter_role;
-	DROP TABLE IF EXISTS tmp_encounter_type;
-	DROP TABLE IF EXISTS tmp_field;
-	DROP TABLE IF EXISTS tmp_field_answer;
-	DROP TABLE IF EXISTS tmp_field_type;
-	DROP TABLE IF EXISTS tmp_form;
-	DROP TABLE IF EXISTS tmp_form_field;
-	DROP TABLE IF EXISTS tmp_location;
-	DROP TABLE IF EXISTS tmp_location_attribute;
-	DROP TABLE IF EXISTS tmp_location_attribute_type;
-	DROP TABLE IF EXISTS tmp_location_tag;
-	DROP TABLE IF EXISTS tmp_location_tag_map;
-	DROP TABLE IF EXISTS tmp_obs;
-	DROP TABLE IF EXISTS tmp_patient;
-	DROP TABLE IF EXISTS tmp_patient_identifier;
-	DROP TABLE IF EXISTS tmp_patient_identifier_type;
-	DROP TABLE IF EXISTS tmp_patient_program;
-	DROP TABLE IF EXISTS tmp_person;
-	DROP TABLE IF EXISTS tmp_person_address;
-	DROP TABLE IF EXISTS tmp_person_attribute;
-	DROP TABLE IF EXISTS tmp_person_attribute_type;
-	DROP TABLE IF EXISTS tmp_person_name;
-	DROP TABLE IF EXISTS tmp_privilege;
-	DROP TABLE IF EXISTS tmp_provider;
-	DROP TABLE IF EXISTS tmp_provider_attribute;
-	DROP TABLE IF EXISTS tmp_provider_attribute_type;
-	DROP TABLE IF EXISTS tmp_role;
-	DROP TABLE IF EXISTS tmp_role_privilege;
-	DROP TABLE IF EXISTS tmp_role_role;
-	DROP TABLE IF EXISTS tmp_user_property;
-	DROP TABLE IF EXISTS tmp_user_role;
-	DROP TABLE IF EXISTS tmp_users;
-	DROP TABLE IF EXISTS tmp_visit;
-	DROP TABLE IF EXISTS tmp_visit_attribute;
-	DROP TABLE IF EXISTS tmp_visit_attribute_type;
-	DROP TABLE IF EXISTS tmp_visit_type;
-	DROP TABLE IF EXISTS user_property;
-	DROP TABLE IF EXISTS user_role;
-	DROP TABLE IF EXISTS user_role_merged;
-	DROP TABLE IF EXISTS users;
-	DROP TABLE IF EXISTS visit;
-	DROP TABLE IF EXISTS visit_attribute;
-	DROP TABLE IF EXISTS visit_attribute_type;
-	DROP TABLE IF EXISTS visit_type;
-END$$
-DELIMITER ;
-
-DELIMITER $$
-CREATE PROCEDURE `dim_concept_modeling`(in impl_id int, in date_from datetime, in date_to datetime)
-BEGIN
-
-	DROP TABLE IF EXISTS concept_latest_name;
-	CREATE TABLE IF NOT EXISTS concept_latest_name SELECT c.implementation_id,
-	    c.concept_id,
-	    (SELECT 
-	            MAX(concept_name_id)
-	        FROM
-	            concept_name
-	        WHERE
-	            implementation_id = c.implementation_id
-	                AND concept_id = c.concept_id
-	                AND locale = 'en'
-	                AND voided = 0
-	                AND concept_name_type IS NULL) AS default_name,
-	    (SELECT 
-	            MAX(concept_name_id)
-	        FROM
-	            concept_name
-	        WHERE
-	            implementation_id = c.implementation_id
-	                AND concept_id = c.concept_id
-	                AND locale = 'en'
-	                AND voided = 0
-	                AND concept_name_type = 'SHORT') AS short_name,
-	    (SELECT 
-	            MAX(concept_name_id)
-	        FROM
-	            concept_name
-	        WHERE
-	            implementation_id = c.implementation_id
-	                AND concept_id = c.concept_id
-	                AND locale = 'en'
-	                AND voided = 0
-	                AND concept_name_type = 'FULLY_SPECIFIED') AS full_name FROM
-	    concept AS c
-	HAVING CONCAT(IFNULL(default_name, ''),
-	        IFNULL(short_name, ''),
-	        IFNULL(full_name, '')) <> '';
-	
-	ALTER TABLE concept_latest_name 
-	ADD PRIMARY KEY composite_id (implementation_id, concept_id);
-	
-	INSERT IGNORE INTO dim_concept (surrogate_id, implementation_id, concept_id, full_name, short_name, default_name, description, retired, data_type, class, hi_absolute, hi_critical, hi_normal, low_absolute, low_critical, low_normal, creator, date_created, version, changed_by, date_changed, uuid) 
-	SELECT c.surrogate_id, c.implementation_id, c.concept_id, cnf.name AS full_name, cns.name AS short_name, cnd.name AS default_name, d.description, c.retired, dt.name AS data_type, cl.name AS class, cn.hi_absolute, cn.hi_critical, cn.hi_normal, cn.low_absolute, cn.low_critical, cn.low_normal, c.creator, c.date_created, c.version, c.changed_by, c.date_changed, c.uuid FROM concept AS c 
-	LEFT JOIN concept_datatype AS dt ON dt.implementation_id = c.implementation_id AND dt.concept_datatype_id = c.datatype_id 
-	LEFT JOIN concept_class AS cl ON cl.implementation_id = c.implementation_id AND cl.concept_class_id = c.class_id 
-	INNER JOIN concept_latest_name AS nm ON nm.implementation_id = c.implementation_id AND nm.concept_id = c.concept_id 
-	LEFT JOIN concept_name AS cnf ON cnf.implementation_id = c.implementation_id AND cnf.concept_name_id = nm.full_name 
-	LEFT JOIN concept_name AS cns ON cns.implementation_id = c.implementation_id AND cns.concept_name_id = nm.short_name 
-	LEFT JOIN concept_name AS cnd ON cnd.implementation_id = c.implementation_id AND cnd.concept_name_id = nm.default_name 
-	LEFT JOIN concept_description AS d ON d.implementation_id = c.implementation_id AND d.concept_id = c.concept_id AND d.locale = 'en' 
-	LEFT JOIN concept_numeric AS cn ON cn.implementation_id = c.implementation_id AND cn.concept_id = c.concept_id 
-	WHERE c.implementation_id = impl_id AND NOT EXISTS (SELECT * FROM dim_concept WHERE implementation_id = c.implementation_id AND concept_id = c.concept_id);
-	
-	UPDATE dim_concept 
-	SET 
-	    full_name = 'Yes',
-	    short_name = 'Yes',
-	    default_name = 'Yes'
-	WHERE
-	    concept_id = 1;
-	UPDATE dim_concept 
-	SET 
-	    full_name = 'No',
-	    short_name = 'No',
-	    default_name = 'No'
-	WHERE
-	    concept_id = 2;
-
-END$$
-DELIMITER ;
-
-DELIMITER $$
-CREATE PROCEDURE `dim_location_modeling`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
-BEGIN
-
-DELETE FROM dim_location WHERE implementation_id = impl_id;
-
-UPDATE location_attribute 
-SET 
-    value_reference = 'Yes'
-WHERE
-    value_reference = 'true';
-UPDATE location_attribute 
-SET 
-    value_reference = 'No'
-WHERE
-    value_reference = 'false';
-
-DROP TABLE IF EXISTS location_attribute_merged;
-
-CREATE TABLE IF NOT EXISTS location_attribute_merged SELECT a.implementation_id,
-    a.location_id,
-    GROUP_CONCAT(IF(a.attribute_type_id = 1,
-            a.value_reference,
-            NULL)) AS location_identifier,
-    GROUP_CONCAT(IF(a.attribute_type_id = 2,
-            a.value_reference,
-            NULL)) AS primary_contact,
-    GROUP_CONCAT(IF(a.attribute_type_id = 3,
-            a.value_reference,
-            NULL)) AS fast_location,
-    GROUP_CONCAT(IF(a.attribute_type_id = 4,
-            a.value_reference,
-            NULL)) AS pmdt_location,
-    GROUP_CONCAT(IF(a.attribute_type_id = 5,
-            a.value_reference,
-            NULL)) AS aic_location,
-    GROUP_CONCAT(IF(a.attribute_type_id = 6,
-            a.value_reference,
-            NULL)) AS pet_location,
-    GROUP_CONCAT(IF(a.attribute_type_id = 7,
-            a.value_reference,
-            NULL)) AS comorbidities_location,
-    GROUP_CONCAT(IF(a.attribute_type_id = 8,
-            a.value_reference,
-            NULL)) AS childhoodtb_location,
-    GROUP_CONCAT(IF(a.attribute_type_id = 9,
-            a.value_reference,
-            NULL)) AS location_type,
-    GROUP_CONCAT(IF(a.attribute_type_id = 10,
-            a.value_reference,
-            NULL)) AS secondary_contact,
-    GROUP_CONCAT(IF(a.attribute_type_id = 11,
-            a.value_reference,
-            NULL)) AS staff_time,
-    GROUP_CONCAT(IF(a.attribute_type_id = 12,
-            a.value_reference,
-            NULL)) AS opd_timing,
-    GROUP_CONCAT(IF(a.attribute_type_id = 13,
-            a.value_reference,
-            NULL)) AS status,
-    GROUP_CONCAT(IF(a.attribute_type_id = 14,
-            a.value_reference,
-            NULL)) AS primary_contact_name,
-    GROUP_CONCAT(IF(a.attribute_type_id = 15,
-            a.value_reference,
-            NULL)) AS secondary_contact_name,
-    GROUP_CONCAT(IF(a.attribute_type_id = 16,
-            a.value_reference,
-            NULL)) AS site_supervisor_system_id,
-    GROUP_CONCAT(IF(a.attribute_type_id = 17,
-            a.value_reference,
-            NULL)) AS ztts_location,
-    GROUP_CONCAT(IF(a.attribute_type_id = 18,
-            a.value_reference,
-            NULL)) AS doctor_visit_timing,
-    '' AS BLANK FROM
-    location_attribute AS a
-WHERE
-    a.voided = 0
-        AND a.implementation_id = impl_id
-GROUP BY a.location_id;
-
-INSERT INTO dim_location (surrogate_id, implementation_id, location_id, location_name, description, address1, address2, city_village, state_province, postal_code, country, latitude, longitude, creator, date_created, retired, parent_location, uuid, location_identifier,primary_contact,fast_location,pmdt_location,aic_location,pet_location,comorbidities_location,childhoodtb_location,location_type,secondary_contact,staff_time,opd_timing,status,primary_contact_name,secondary_contact_name,site_supervisor_system_id,ztts_location,doctor_visit_timing) 
-SELECT l.surrogate_id, l.implementation_id, l.location_id, l.name as location_name, l.description, l.address1, l.address2, l.city_village, l.state_province, l.postal_code, l.country, l.latitude, l.longitude, l.creator, l.date_created, l.retired, l.parent_location, l.uuid, lam.location_identifier,lam.primary_contact,lam.fast_location,lam.pmdt_location,lam.aic_location,lam.pet_location,lam.comorbidities_location,lam.childhoodtb_location,lam.location_type,lam.secondary_contact,lam.staff_time,lam.opd_timing,lam.status,lam.primary_contact_name,lam.secondary_contact_name,lam.site_supervisor_system_id,lam.ztts_location,lam.doctor_visit_timing FROM location AS l 
-LEFT OUTER JOIN location_attribute_merged AS lam USING (implementation_id, location_id) 
-WHERE l.implementation_id = impl_id AND l.surrogate_id NOT IN 
-	(SELECT surrogate_id FROM dim_location WHERE implementation_id = l.implementation_id);
-
-END$$
-DELIMITER ;
-
-DELIMITER $$
-CREATE PROCEDURE `dim_user_modeling`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
-BEGIN
 
 	DROP TABLE IF EXISTS user_role_merged;
 
@@ -5941,7 +5548,7 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE `dim_patient_modeling`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
+CREATE PROCEDURE `dim_patient`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
 BEGIN
 
 DROP TABLE IF EXISTS person_latest_name;
@@ -6271,7 +5878,7 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE `dim_user_form_modeling`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
+CREATE PROCEDURE `dim_user_form`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
 BEGIN
 
 INSERT INTO dim_user_form 
@@ -6293,7 +5900,7 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE `dim_encounter_modeling`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
+CREATE PROCEDURE `dim_encounter`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
 BEGIN
 
 INSERT IGNORE INTO dim_encounter 
@@ -6372,15 +5979,11 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE `dim_obs_modeling`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
+CREATE PROCEDURE `dim_obs`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
 BEGIN
 
 INSERT IGNORE INTO dim_obs 
-SELECT o.surrogate_id, o.implementation_id, e.encounter_id, e.encounter_type, e.patient_id, p.patient_identifier, e.provider, o.obs_id, o.obs_group_id, o.concept_id, c.short_name AS question, obs_datetime, o.location_id, concat(ifnull(ifnull(ifnull(c2.short_name, c2.default_name), c2.full_name), ''), ifnull(o.value_datetime, ''), ifnull(o.value_numeric, ''), ifnull(o.value_text, '')) AS answer, o.value_coded, o.value_datetime, o.value_numeric, o.value_text, o.creator, o.date_created, o.voided, o.uuid FROM obs AS o 
-INNER JOIN dim_concept AS c ON c.implementation_id = o.implementation_id AND c.concept_id = o.concept_id 
-INNER JOIN dim_encounter AS e ON e.implementation_id = o.implementation_id AND e.encounter_id = o.encounter_id 
 INNER JOIN dim_patient AS p ON p.implementation_id = e.implementation_id AND p.patient_id = e.patient_id 
-LEFT JOIN dim_concept AS c2 ON c2.implementation_id = o.implementation_id AND c2.concept_id = o.value_coded 
 WHERE o.voided = 0 AND NOT EXISTS (SELECT * FROM dim_obs WHERE implementation_id = o.implementation_id AND obs_id = o.obs_id) 
 AND (o.date_created BETWEEN date_from AND date_to);
 
@@ -7162,7 +6765,6 @@ update gfatm_dw.fact_comorb_mhfup_dw  mhfup set Number_Of_Anticipated_Visits=((s
 update gfatm_dw.fact_comorb_mhfup_dw  mhfup set Number_Of_Visits_Done= (select count(*) from gfatm_dw.enc_comorbidities_treatment_followup_mental_health f inner join   dim_datetime as d on d.full_date= date(f.date_entered) where d.datetime_id= mhfup.datetime_id and f.location_id= mhfup.location_id and f.implementation_id= mhfup.implementation_id and d.full_date >= (current_date()-interval 1 month))  where datetime_id>= (select datetime_id from dim_datetime where full_date=(current_date()-interval 1 month));
 update gfatm_dw.fact_comorb_mhfup_dw  mhfup set Number_Of_Assessment_Form_MH=(select count(*) from gfatm_dw.enc_comorbidities_assessment_form_mental_health h inner join   dim_datetime as d on d.full_date= date(h.date_entered) where d.datetime_id= mhfup.datetime_id and h.location_id= mhfup.location_id and h.implementation_id= mhfup.implementation_id and d.full_date >= (current_date()-interval 1 month))  where datetime_id>= (select datetime_id from dim_datetime where full_date=(current_date()-interval 1 month)); 
 update gfatm_dw.fact_comorb_mhfup_dw  mhfup set Number_of_End_Of_Treatment_MH=(select count(*) from gfatm_dw.enc_comorbidities_end_of_treatment_mental_health t inner join dim_datetime as d on d.full_date= date(t.date_entered) where d.datetime_id=mhfup.datetime_id and t.location_id= mhfup.location_id and t.implementation_id= mhfup.implementation_id and d.full_date >= (current_date()-interval 1 month))  where datetime_id>= (select datetime_id from dim_datetime where full_date=(current_date()-interval 1 month)); 
-
 RESET QUERY CACHE;
 delete from gfatm_dw.fact_chtb_ltf_antibiotic_treatment where datetime_id>= (select datetime_id from dim_datetime where full_date=(current_date()-interval 1 month));
 
