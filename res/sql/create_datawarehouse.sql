@@ -5582,11 +5582,7 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE `dim_concept_modeling`(in impl_id int, in date_from datetime, in date_to datetime)
-BEGIN
-
 	DROP TABLE IF EXISTS concept_latest_name;
-	CREATE TABLE IF NOT EXISTS concept_latest_name SELECT c.implementation_id,
 	    c.concept_id,
 	    (SELECT 
 	            MAX(concept_name_id)
@@ -5656,8 +5652,7 @@ BEGIN
 END$$
 DELIMITER ;
 
-DELIMITER $$
-CREATE PROCEDURE `dim_location_modeling`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
+CREATE PROCEDURE `dim_location`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
 BEGIN
 
 DELETE FROM dim_location WHERE implementation_id = impl_id;
@@ -5748,7 +5743,7 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE `dim_user_modeling`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
+CREATE PROCEDURE `dim_user`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
 BEGIN
 
 	DROP TABLE IF EXISTS user_role_merged;
@@ -5941,7 +5936,7 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE `dim_patient_modeling`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
+CREATE PROCEDURE `dim_patient`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
 BEGIN
 
 DROP TABLE IF EXISTS person_latest_name;
@@ -6271,7 +6266,7 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE `dim_user_form_modeling`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
+CREATE PROCEDURE `dim_user_form`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
 BEGIN
 
 INSERT INTO dim_user_form 
@@ -6293,7 +6288,7 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE `dim_encounter_modeling`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
+CREATE PROCEDURE `dim_encounter`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
 BEGIN
 
 INSERT IGNORE INTO dim_encounter 
@@ -6372,15 +6367,11 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE `dim_obs_modeling`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
+CREATE PROCEDURE `dim_obs`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
 BEGIN
 
 INSERT IGNORE INTO dim_obs 
-SELECT o.surrogate_id, o.implementation_id, e.encounter_id, e.encounter_type, e.patient_id, p.patient_identifier, e.provider, o.obs_id, o.obs_group_id, o.concept_id, c.short_name AS question, obs_datetime, o.location_id, concat(ifnull(ifnull(ifnull(c2.short_name, c2.default_name), c2.full_name), ''), ifnull(o.value_datetime, ''), ifnull(o.value_numeric, ''), ifnull(o.value_text, '')) AS answer, o.value_coded, o.value_datetime, o.value_numeric, o.value_text, o.creator, o.date_created, o.voided, o.uuid FROM obs AS o 
-INNER JOIN dim_concept AS c ON c.implementation_id = o.implementation_id AND c.concept_id = o.concept_id 
-INNER JOIN dim_encounter AS e ON e.implementation_id = o.implementation_id AND e.encounter_id = o.encounter_id 
 INNER JOIN dim_patient AS p ON p.implementation_id = e.implementation_id AND p.patient_id = e.patient_id 
-LEFT JOIN dim_concept AS c2 ON c2.implementation_id = o.implementation_id AND c2.concept_id = o.value_coded 
 WHERE o.voided = 0 AND NOT EXISTS (SELECT * FROM dim_obs WHERE implementation_id = o.implementation_id AND obs_id = o.obs_id) 
 AND (o.date_created BETWEEN date_from AND date_to);
 

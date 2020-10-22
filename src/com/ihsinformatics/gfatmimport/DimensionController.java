@@ -39,6 +39,9 @@ import com.ihsinformatics.util.DateTimeUtil;
 public class DimensionController {
 
 	private static final Logger log = Logger.getLogger(Class.class.getName());
+	// Wait for XXXms, which ought to be enough for most of the queries
+	public static final int PARALLEL_EXECUTION_DELAY = 500;
+
 	private DatabaseUtil db;
 
 	public DimensionController(DatabaseUtil db) {
@@ -68,18 +71,24 @@ public class DimensionController {
 			log.warning(e.getMessage());
 		}
 		try {
-			log.info("Creating/updating dimensions");
 			Map<String, Object> params = new HashMap<String, Object>();
 			params.put("impl_id", implementationId);
 			params.put("date_from", from);
 			params.put("date_to", to);
-			db.runStoredProcedure("dim_concept_modeling", params);
-			db.runStoredProcedure("dim_location_modeling", params);
-			db.runStoredProcedure("dim_user_modeling", params);
-			db.runStoredProcedure("dim_patient_modeling", params);
-			db.runStoredProcedure("dim_user_form_modeling", params);
-			db.runStoredProcedure("dim_encounter_modeling", params);
-			db.runStoredProcedure("dim_obs_modeling", params);
+			log.info("Creating/updating concept dimensions");
+			db.runStoredProcedure("dim_concept", params);
+			log.info("Creating/updating location dimensions");
+			db.runStoredProcedure("dim_location", params);
+			log.info("Creating/updating user dimensions");
+			db.runStoredProcedure("dim_user", params);
+			log.info("Creating/updating patinet dimensions");
+			db.runStoredProcedure("dim_patient", params);
+			log.info("Creating/updating user form dimensions");
+			db.runStoredProcedure("dim_user_form", params);
+			log.info("Creating/updating encounter dimensions");
+			db.runStoredProcedure("dim_encounter", params);
+			log.info("Creating/updating obs dimensions");
+			db.runStoredProcedure("dim_obs", params);
 		} catch (Exception e) {
 			log.warning(e.getMessage());
 		}
@@ -140,7 +149,6 @@ public class DimensionController {
 			query.append("monthname(" + sqlDate + ")),");
 			start.add(Calendar.DATE, 1);
 		}
-		query.setCharAt(query.length() - 1, ';');
 		log.info("Executing: " + query.toString());
 		db.runCommand(CommandType.INSERT, query.toString());
 	}
@@ -260,7 +268,7 @@ public class DimensionController {
 				String str = element.toString().replaceAll("[^A-Za-z0-9]", "_").toLowerCase();
 				// Reduce the length of column if the name is too long
 				if (str.length() > 32) {
-					str = str.substring(0, 32) + "_xxx";
+					str = str.substring(0, 32) + "_xyz";
 				}
 				// Append an underscore if the column name is duplicated
 				if (taken.contains(str)) {
@@ -400,9 +408,7 @@ public class DimensionController {
 			});
 			executor.execute(worker);
 			try {
-				// Wait for 100ms, which ought to be enough for most of the
-				// queries
-				Thread.sleep(100);
+				Thread.sleep(PARALLEL_EXECUTION_DELAY);
 			} catch (InterruptedException e) {
 			}
 		}
