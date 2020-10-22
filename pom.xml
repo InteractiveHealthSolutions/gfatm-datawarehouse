@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>gfatm-sync</groupId>
 	<artifactId>gfatm-datawarehouse</artifactId>
-	<version>2.1.2-SNAPSHOT</version>
+	<version>2.1.2</version>
 	<name>Global Fund TB Data Warehouse</name>
 	<description>Data Warehousing process for GFATM databases</description>
 
@@ -15,7 +15,7 @@
 		<connection>scm:git:https://git.ihsinformatics.com/gfatm/gfatm-datawarehouse</connection>
 		<developerConnection>scm:git:https://git.ihsinformatics.com/gfatm/gfatm-datawarehouse</developerConnection>
 		<url>https://git.ihsinformatics.com/gfatm/gfatm-datawarehouse</url>
-		<tag>HEAD</tag>
+		<tag>gfatm-datawarehouse-2.1.2</tag>
 	</scm>
 
 	<build>
