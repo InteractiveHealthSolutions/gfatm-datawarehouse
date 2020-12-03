@@ -625,7 +625,7 @@ CREATE TABLE IF NOT EXISTS dim_lab_test (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS dim_lab_test_result (
-  surrogate_id int(11) NOT NULL,
+  surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   test_order_id int(11) NOT NULL,
   patient_id int(11) NOT NULL DEFAULT '0',
@@ -2711,7 +2711,7 @@ CREATE TABLE IF NOT EXISTS person_attribute_type (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS person_latest_address (
-  surrogate_id int(11) NOT NULL DEFAULT '0',
+  surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   person_address_id int(11) NOT NULL,
   person_id int(11) DEFAULT NULL,
@@ -2745,7 +2745,7 @@ CREATE TABLE IF NOT EXISTS person_latest_address (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS person_latest_name (
-  surrogate_id int(11) NOT NULL DEFAULT '0',
+  surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   person_name_id int(11) NOT NULL,
   preferred tinyint(1) NOT NULL DEFAULT '0',
@@ -4992,7 +4992,7 @@ CREATE TABLE IF NOT EXISTS uform_uvgi_maintenance (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS user_attribute (
-  surrogate_id int(11) NOT NULL,
+  surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   user_attribute_id int(11) NOT NULL,
   attribute_value varchar(255) NOT NULL,
