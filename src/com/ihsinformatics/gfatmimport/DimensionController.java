@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -70,42 +71,72 @@ public class DimensionController {
 		} catch (Exception e) {
 			log.warning(e.getMessage());
 		}
+		Map<String, Object> params = new HashMap<String, Object>();
+		params.put("impl_id", implementationId);
+		params.put("date_from", from);
+		params.put("date_to", to);
+		log.info("Creating/updating concept dimensions");
 		try {
-			Map<String, Object> params = new HashMap<String, Object>();
-			params.put("impl_id", implementationId);
-			params.put("date_from", from);
-			params.put("date_to", to);
-			log.info("Creating/updating concept dimensions");
 			db.runStoredProcedure("dim_concept", params);
-			log.info("Creating/updating location dimensions");
+		} catch (Exception e) {
+			log.warning(e.getMessage());
+		}
+		log.info("Creating/updating location dimensions");
+		try {
 			db.runStoredProcedure("dim_location", params);
-			log.info("Creating/updating user dimensions");
+		} catch (Exception e) {
+			log.warning(e.getMessage());
+		}
+		log.info("Creating/updating user dimensions");
+		try {
 			db.runStoredProcedure("dim_user", params);
-			log.info("Creating/updating patinet dimensions");
+		} catch (Exception e) {
+			log.warning(e.getMessage());
+		}
+		log.info("Creating/updating patinet dimensions");
+		try {
 			db.runStoredProcedure("dim_patient", params);
-			log.info("Creating/updating user form dimensions");
+		} catch (Exception e) {
+			log.warning(e.getMessage());
+		}
+		log.info("Creating/updating user form dimensions");
+		try {
 			db.runStoredProcedure("dim_user_form", params);
-			log.info("Creating/updating encounter dimensions");
+		} catch (Exception e) {
+			log.warning(e.getMessage());
+		}
+		log.info("Creating/updating encounter dimensions");
+		try {
 			db.runStoredProcedure("dim_encounter", params);
-			log.info("Creating/updating obs dimensions");
+		} catch (Exception e) {
+			log.warning(e.getMessage());
+		}
+		log.info("Creating/updating obs dimensions");
+		try {
 			db.runStoredProcedure("dim_obs", params);
 		} catch (Exception e) {
 			log.warning(e.getMessage());
 		}
+		log.info("Creating/updating lab test dimensions");
 		try {
-			log.info("Starting deencounterizing OpenMRS");
+			db.runStoredProcedure("dim_lab_test", params);
+		} catch (Exception e) {
+			log.warning(e.getMessage());
+		}
+		log.info("Starting deencounterizing OpenMRS");
+		try {
 			deencounterizeOpenMrs();
 		} catch (Exception e) {
 			log.warning(e.getMessage());
 		}
+		log.info("Starting deencounterizing GFATM");
 		try {
-			log.info("Starting deencounterizing GFATM");
 			deencounterizeGfatm();
 		} catch (Exception e) {
 			log.warning(e.getMessage());
 		}
+		log.info("Starting deencounterizing OpenMRS extensions");
 		try {
-			log.info("Starting deencounterizing OpenMRS extensions");
 			denormalizeOpenMrsExtended();
 		} catch (Exception e) {
 			log.warning(e.getMessage());
@@ -138,19 +169,19 @@ public class DimensionController {
 		if (!start.getTime().before(end.getTime())) {
 			return;
 		}
-		StringBuilder query = new StringBuilder("insert into dim_datetime values ");
 		while (start.getTime().before(end.getTime())) {
 			String sqlDate = "'" + DateTimeUtil.toSqlDateString(start.getTime()) + "'";
+			StringBuilder query = new StringBuilder("insert into dim_datetime values ");
 			query.append("(0, " + sqlDate + ", ");
 			query.append("year(" + sqlDate + "), ");
 			query.append("month(" + sqlDate + "), ");
 			query.append("day(" + sqlDate + "), ");
 			query.append("dayname(" + sqlDate + "), ");
-			query.append("monthname(" + sqlDate + ")),");
+			query.append("monthname(" + sqlDate + "))");
+			log.info("Executing: " + query.toString());
+			db.runCommand(CommandType.INSERT, query.toString());
 			start.add(Calendar.DATE, 1);
 		}
-		log.info("Executing: " + query.toString());
-		db.runCommand(CommandType.INSERT, query.toString());
 	}
 
 	public void deencounterizeGfatm() {
@@ -297,7 +328,15 @@ public class DimensionController {
 					+ " add primary key surrogate_id (surrogate_id), add key patient_id (patient_id), add key encounter_id (encounter_id)");
 		}
 		executeQueryPool(dropQueries.toArray(new String[] {}));
-		executeQueryPool(createQueries.toArray(new String[] {}));
+		// Due to execution length, the create queries should also be split
+		int size= createQueries.size();
+		String[] createArray = createQueries.toArray(new String[] {});
+		String[] a = Arrays.copyOfRange(createArray, 0, (size + 1)/2);
+		String[] b = Arrays.copyOfRange(createArray, (size + 1)/2, size);
+		log.info("Executing first pool of create queries...");
+		executeQueryPool(a);
+		log.info("Executing second pool of create queries...");
+		executeQueryPool(b);
 		executeQueryPool(alterQueries.toArray(new String[] {}));
 	}
 
