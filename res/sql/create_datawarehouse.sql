@@ -625,7 +625,7 @@ CREATE TABLE IF NOT EXISTS dim_lab_test (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS dim_lab_test_result (
-  surrogate_id int(11) NOT NULL,
+  surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   test_order_id int(11) NOT NULL,
   patient_id int(11) NOT NULL DEFAULT '0',
@@ -2711,7 +2711,7 @@ CREATE TABLE IF NOT EXISTS person_attribute_type (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 CREATE TABLE IF NOT EXISTS person_latest_address (
-  surrogate_id int(11) NOT NULL DEFAULT '0',
+  surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   person_address_id int(11) NOT NULL,
   person_id int(11) DEFAULT NULL,
@@ -2745,7 +2745,7 @@ CREATE TABLE IF NOT EXISTS person_latest_address (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS person_latest_name (
-  surrogate_id int(11) NOT NULL DEFAULT '0',
+  surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   person_name_id int(11) NOT NULL,
   preferred tinyint(1) NOT NULL DEFAULT '0',
@@ -4992,7 +4992,7 @@ CREATE TABLE IF NOT EXISTS uform_uvgi_maintenance (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 CREATE TABLE IF NOT EXISTS user_attribute (
-  surrogate_id int(11) NOT NULL,
+  surrogate_id int(11) NOT NULL AUTO_INCREMENT,
   implementation_id int(11) NOT NULL,
   user_attribute_id int(11) NOT NULL,
   attribute_value varchar(255) NOT NULL,
@@ -5582,11 +5582,7 @@ END$$
 DELIMITER ;
 
 DELIMITER $$
-CREATE PROCEDURE `dim_concept`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
-BEGIN
-
 	DROP TABLE IF EXISTS concept_latest_name;
-	CREATE TABLE IF NOT EXISTS concept_latest_name SELECT c.implementation_id,
 	    c.concept_id,
 	    (SELECT 
 	            MAX(concept_name_id)
@@ -5656,7 +5652,6 @@ BEGIN
 END$$
 DELIMITER ;
 
-DELIMITER $$
 CREATE PROCEDURE `dim_location`(IN impl_id INT, IN date_from DATETIME, IN date_to DATETIME)
 BEGIN
 
@@ -6376,11 +6371,7 @@ CREATE PROCEDURE `dim_obs`(IN impl_id INT, IN date_from DATETIME, IN date_to DAT
 BEGIN
 
 INSERT IGNORE INTO dim_obs 
-SELECT o.surrogate_id, o.implementation_id, e.encounter_id, e.encounter_type, e.patient_id, p.patient_identifier, e.provider, o.obs_id, o.obs_group_id, o.concept_id, c.short_name AS question, obs_datetime, o.location_id, concat(ifnull(ifnull(ifnull(c2.short_name, c2.default_name), c2.full_name), ''), ifnull(o.value_datetime, ''), ifnull(o.value_numeric, ''), ifnull(o.value_text, '')) AS answer, o.value_coded, o.value_datetime, o.value_numeric, o.value_text, o.creator, o.date_created, o.voided, o.uuid FROM obs AS o 
-INNER JOIN dim_concept AS c ON c.implementation_id = o.implementation_id AND c.concept_id = o.concept_id 
-INNER JOIN dim_encounter AS e ON e.implementation_id = o.implementation_id AND e.encounter_id = o.encounter_id 
 INNER JOIN dim_patient AS p ON p.implementation_id = e.implementation_id AND p.patient_id = e.patient_id 
-LEFT JOIN dim_concept AS c2 ON c2.implementation_id = o.implementation_id AND c2.concept_id = o.value_coded 
 WHERE o.voided = 0 AND NOT EXISTS (SELECT * FROM dim_obs WHERE implementation_id = o.implementation_id AND obs_id = o.obs_id) 
 AND (o.date_created BETWEEN date_from AND date_to);
 
