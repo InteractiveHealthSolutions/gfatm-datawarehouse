@@ -108,7 +108,7 @@ public class OpenMrsExtendedImportController extends AbstractImportController {
 					+ " (surrogate_id, implementation_id, test_type_id, name, short_name, test_group, requires_specimen, reference_concept_id, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 			selectQuery = "SELECT 0,'" + implementationId
 					+ "', test_type_id, name, short_name, test_group, requires_specimen, reference_concept_id, description, creator, date_created, changed_by, date_changed, retired, retired_by, date_retired, retire_reason, uuid FROM "
-					+ database + "." + tableName + " AS t " + filter("t.date_created", "t.date_changed");
+					+ database + "." + tableName + " AS t ";
 			log.info("Inserting data from " + database + "." + tableName + " into data warehouse");
 			remoteSelectInsert(selectQuery, insertQuery, remoteDb.getConnection(), targetDb.getConnection());
 			// Insert new records
