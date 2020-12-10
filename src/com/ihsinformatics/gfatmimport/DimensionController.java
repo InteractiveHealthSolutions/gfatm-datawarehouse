@@ -248,7 +248,7 @@ public class DimensionController {
 					"group by uf.surrogate_id, uf.implementation_id, uf.user_form_id, uf.user_id, u.username, uf.location_id, l.location_name, uf.date_entered");
 			dropQueries.add("drop table if exists uform_" + userFormName);
 			createQueries.add(query.toString());
-			alterQueries.add("alter table uform_" + userFormName + " add primary key surrogate_id (surrogate_id)");
+			alterQueries.add("alter table uform_" + userFormName + " add primary key surrogate_id (surrogate_id), add key user_form_id (user_form_id), add key username (username), add key location_id (location_id), add key date_entered (date_entered)");
 		}
 		executeQueryPool(dropQueries.toArray(new String[] {}));
 		executeQueryPool(createQueries.toArray(new String[] {}));
@@ -325,7 +325,7 @@ public class DimensionController {
 			dropQueries.add("drop table if exists enc_" + encounterName);
 			createQueries.add(query.toString());
 			alterQueries.add("alter table enc_" + encounterName
-					+ " add primary key surrogate_id (surrogate_id), add key patient_id (patient_id), add key encounter_id (encounter_id)");
+					+ " add primary key surrogate_id (surrogate_id), add key patient_id (patient_id), add key encounter_id (encounter_id), add key provider (provider), add key location_id (location_id), add key date_entered (date_entered)");
 		}
 		executeQueryPool(dropQueries.toArray(new String[] {}));
 		// Due to execution length, the create queries should also be split
@@ -407,7 +407,7 @@ public class DimensionController {
 			dropQueries.add("drop table if exists lab_" + labTestType);
 			createQueries.add(query.toString());
 			alterQueries.add("alter table lab_" + labTestType
-					+ " add primary key surrogate_id (surrogate_id), add key patient_id (patient_id), add key test_order_id (test_order_id)");
+					+ " add primary key surrogate_id (surrogate_id), add key patient_id (patient_id), add key test_order_id (test_order_id), add key encounter_id (encounter_id), add key order_date (order_date), add key lab_reference_number (lab_reference_number)");
 		}
 		executeQueryPool(dropQueries.toArray(new String[] {}));
 		executeQueryPool(createQueries.toArray(new String[] {}));
